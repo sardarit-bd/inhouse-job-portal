@@ -4,22 +4,37 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\JobApplication;
+use App\Models\Job;
 use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $applications = JobApplication::with(['job', 'user'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $query = JobApplication::with(['user', 'job']);
         
-        return view('admin.applications.index', compact('applications'));
+        // Apply filters
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        if ($request->filled('job_id')) {
+            $query->where('job_id', $request->job_id);
+        }
+        
+        if ($request->filled('date')) {
+            $query->whereDate('applied_at', $request->date);
+        }
+        
+        $applications = $query->latest()->paginate(20);
+        $jobs = Job::where('status', 'approved')->get();
+        
+        return view('admin.applications.index', compact('applications', 'jobs'));
     }
 
     public function show(JobApplication $application)
     {
-        $application->load(['job', 'user.jobSeekerProfile']);
+        $application->load(['user', 'job']);
         return view('admin.applications.show', compact('application'));
     }
 
@@ -27,23 +42,23 @@ class ApplicationController extends Controller
     {
         $request->validate([
             'status' => 'required|in:pending,reviewed,shortlisted,rejected,hired',
-            'interview_notes' => 'nullable|string',
         ]);
-
-        $data = ['status' => $request->status];
         
-        if ($request->filled('interview_notes')) {
-            $notes = $application->interview_notes ?? [];
-            $notes[] = [
-                'note' => $request->interview_notes,
-                'date' => now()->toDateTimeString(),
-                'admin' => auth()->user()->name,
-            ];
-            $data['interview_notes'] = $notes;
-        }
+        $application->update([
+            'status' => $request->status,
+            'reviewed_at' => now(),
+            'notes' => $request->notes ?? $application->notes,
+        ]);
+        
+        return redirect()->route('admin.applications.show', $application)
+            ->with('success', 'Application status updated successfully.');
+    }
 
-        $application->update($data);
-
-        return redirect()->back()->with('success', 'Application status updated successfully.');
+    public function destroy(JobApplication $application)
+    {
+        $application->delete();
+        
+        return redirect()->route('admin.applications.index')
+            ->with('success', 'Application deleted successfully.');
     }
 }

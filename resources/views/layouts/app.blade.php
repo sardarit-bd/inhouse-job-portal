@@ -20,12 +20,8 @@
     @include('partials.navigation')
 
     <!-- Page Content -->
-    <main class="flex-grow">
+    <main class="flex-grow min-h-screen">
         <!-- Page Header -->
-
-
-
-
         <!-- Main Content -->
         <div class="w-full">
             @yield('content')

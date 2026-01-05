@@ -8,35 +8,112 @@ use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $jobs = Job::with('user')
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $query = Job::with(['user'])
+            ->withCount('applications');
         
-        return view('admin.jobs.index', compact('jobs'));
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('company_name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        $jobs = $query->latest()->paginate(20);
+        
+        $totalJobs = Job::count();
+        $pendingJobs = Job::where('status', 'pending')->count();
+        $activeJobs = Job::where('is_active', true)->count();
+        
+        return view('admin.jobs.index', compact('jobs', 'totalJobs', 'pendingJobs', 'activeJobs'));
     }
 
     public function show(Job $job)
     {
-        $job->load(['user', 'applications.user']);
+        $job->load(['user']);
+        $job->loadCount('applications');
         return view('admin.jobs.show', compact('job'));
     }
 
     public function updateStatus(Request $request, Job $job)
     {
         $request->validate([
-            'status' => 'required|in:approved,rejected',
+            'status' => 'required|in:pending,approved,rejected',
+        ]);
+        
+        $job->update([
+            'status' => $request->status,
+            'is_active' => $request->status == 'approved',
+        ]);
+        
+        return redirect()->route('admin.jobs.show', $job)
+            ->with('success', 'Job status updated successfully.');
+    }
+
+    public function create()
+    {
+        return view('admin.jobs.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'company_name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'location' => 'required|string|max:255',
+            'salary' => 'nullable|numeric|min:0',
+            'job_type' => 'required|string|in:full-time,part-time,contract,remote,internship',
+            'experience_level' => 'required|string|in:intern,junior,mid,senior,lead,executive',
+            'skills_required' => 'nullable|string',
+            'benefits' => 'nullable|string',
+            'application_deadline' => 'nullable|date|after_or_equal:today',
+            'company_logo' => 'nullable|image|max:2048',
+            'is_active' => 'boolean',
+            'status' => 'required|string|in:pending,approved,rejected',
         ]);
 
-        $job->update(['status' => $request->status]);
+        // Format skills required
+        if ($request->filled('skills_required')) {
+            $skills = array_map('trim', explode(',', $request->skills_required));
+            $validated['skills_required'] = json_encode($skills);
+        }
 
-        return redirect()->back()->with('success', 'Job status updated successfully.');
+        // Format benefits
+        if ($request->filled('benefits')) {
+            $benefits = array_filter(array_map('trim', explode("\n", $request->benefits)));
+            $validated['benefits'] = json_encode($benefits);
+        }
+
+        // Handle file upload
+        if ($request->hasFile('company_logo')) {
+            $validated['company_logo'] = $request->file('company_logo')->store('company-logos', 'public');
+        }
+
+        // Set default values
+        $validated['user_id'] = auth()->id();
+        $validated['views'] = 0;
+
+        // Create the job
+        Job::create($validated);
+
+        return redirect()->route('admin.jobs.index')
+            ->with('success', 'Job posted successfully.');
     }
 
     public function destroy(Job $job)
     {
+        $job->applications()->delete();
         $job->delete();
-        return redirect()->route('admin.jobs.index')->with('success', 'Job deleted successfully.');
+        
+        return redirect()->route('admin.jobs.index')
+            ->with('success', 'Job deleted successfully.');
     }
 }

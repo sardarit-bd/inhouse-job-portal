@@ -1,4 +1,3 @@
-// database/migrations/2024_01_01_000005_create_job_views_table.php
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -14,7 +13,8 @@ return new class extends Migration
             $table->foreignId('job_id')->constrained('open_jobs')->onDelete('cascade');
             $table->string('ip_address');
             $table->timestamp('viewed_at')->useCurrent();
-
+            
+            // Optional: Add index for better performance
             $table->index(['job_id', 'ip_address']);
         });
     }

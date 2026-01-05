@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -42,11 +44,6 @@ class User extends Authenticatable
         return $this->role === 'job_seeker';
     }
 
-    public function jobSeekerProfile()
-    {
-        return $this->hasOne(JobSeekerProfile::class);
-    }
-
     public function jobs()
     {
         return $this->hasMany(Job::class);
@@ -55,5 +52,54 @@ class User extends Authenticatable
     public function applications()
     {
         return $this->hasMany(JobApplication::class);
+    }
+    public function personalInformation(): HasOne
+    {
+        return $this->hasOne(PersonalInformation::class);
+    }
+
+    public function educations(): HasMany
+    {
+        return $this->hasMany(Education::class);
+    }
+
+    public function skills(): HasMany
+    {
+        return $this->hasMany(Skill::class);
+    }
+
+    public function experiences(): HasMany
+    {
+        return $this->hasMany(Experience::class);
+    }
+
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    public function certifications(): HasMany
+    {
+        return $this->hasMany(Certification::class);
+    }
+
+    public function socialLinks(): HasMany
+    {
+        return $this->hasMany(SocialLink::class);
+    }
+
+    public function profileVisibilitySetting(): HasOne
+    {
+        return $this->hasOne(ProfileVisibilitySetting::class);
+    }
+
+    public function profileViews(): HasMany
+    {
+        return $this->hasMany(ProfileView::class);
+    }
+
+    public function jobSeekerProfile(): HasOne
+    {
+        return $this->hasOne(JobSeekerProfile::class);
     }
 }

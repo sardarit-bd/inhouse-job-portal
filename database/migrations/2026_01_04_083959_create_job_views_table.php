@@ -11,10 +11,10 @@ return new class extends Migration
     {
         Schema::create('job_views', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('job_id')->constrained()->onDelete('cascade');
+            $table->foreignId('job_id')->constrained('open_jobs')->onDelete('cascade');
             $table->string('ip_address');
             $table->timestamp('viewed_at')->useCurrent();
-            
+
             $table->index(['job_id', 'ip_address']);
         });
     }

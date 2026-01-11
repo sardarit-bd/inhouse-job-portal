@@ -58,6 +58,12 @@ class User extends Authenticatable
         return $this->hasOne(PersonalInformation::class);
     }
 
+     // Get first name from personal information
+    public function getFirstNameAttribute()
+    {
+        return $this->personalInformation?->first_name ?? $this->name;
+    }
+
     public function educations(): HasMany
     {
         return $this->hasMany(Education::class);
@@ -122,5 +128,33 @@ class User extends Authenticatable
     public function postedJobs()
     {
         return $this->hasMany(Job::class, 'user_id');
+    }
+
+    // Helper method to get full name
+    public function getFullNameAttribute()
+    {
+        if ($this->personalInformation && 
+            ($this->personalInformation->first_name || $this->personalInformation->last_name)) {
+            return trim($this->personalInformation->first_name . ' ' . $this->personalInformation->last_name);
+        }
+        
+        return $this->name;
+    }
+    
+    // Helper method to get complete address
+    public function getCompleteAddressAttribute()
+    {
+        if (!$this->personalInformation) {
+            return $this->address;
+        }
+        
+        $parts = [];
+        if ($this->personalInformation->address) $parts[] = $this->personalInformation->address;
+        if ($this->personalInformation->city) $parts[] = $this->personalInformation->city;
+        if ($this->personalInformation->state) $parts[] = $this->personalInformation->state;
+        if ($this->personalInformation->country) $parts[] = $this->personalInformation->country;
+        if ($this->personalInformation->zip_code) $parts[] = $this->personalInformation->zip_code;
+        
+        return implode(', ', $parts);
     }
 }

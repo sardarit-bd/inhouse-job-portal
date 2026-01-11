@@ -14,7 +14,7 @@
                 <li><a href="{{ route('about') }}" class="hover:text-blue-600 transition">About</a></li>
 
                 <!-- Dropdown -->
-                <li class="relative group">
+                <!-- <li class="relative group">
                     <button class="flex items-center gap-1 hover:text-blue-600 transition">
                         Pages
                         <svg class="w-4 h-4 mt-[2px]" fill="none" stroke="currentColor" stroke-width="2"
@@ -28,7 +28,7 @@
                         <li><a href="#" class="block px-5 py-2 hover:bg-blue-50">Blog</a></li>
                         <li><a href="#" class="block px-5 py-2 hover:bg-blue-50">Job Details</a></li>
                     </ul>
-                </li>
+                </li> -->
 
                 <li><a href="{{ route('contact') }}" class="hover:text-blue-600 transition">Contact</a></li>
             </ul>

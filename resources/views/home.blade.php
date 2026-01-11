@@ -12,7 +12,7 @@
             
             <!-- Hero Content -->
             <div class="relative h-full flex items-center hero-section">
-                <div class="container mx-auto px-4">
+                <div class="container px-4">
                     <div class="max-w-3xl mx-auto text-center">
                         <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 animate-fade-in-up">
                             Find Your Dream Career Opportunity
@@ -22,7 +22,7 @@
                         </p>
                         
                         <!-- Search Box -->
-                        <div class="mt-10 bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-2 md:p-3 animate-fade-in-up animation-delay-400">
+                        <div class="mt-10 bg-white/95 backdrop-blur-sm shadow-2xl p-2 md:p-3 animate-fade-in-up animation-delay-400">
                             <form action="{{ route('jobs.index') }}" method="GET" class="flex flex-col md:flex-row gap-2">
                                 <div class="flex-1">
                                     <div class="relative">
@@ -43,16 +43,16 @@
                                     </div>
                                 </div>
                                 <button type="submit" 
-                                        class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-10 py-5 rounded-xl font-bold text-lg transition-all duration-300 whitespace-nowrap shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                                        class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-10 py-5 font-bold text-lg transition-all duration-300 whitespace-nowrap shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                                     <i class="fas fa-search mr-2"></i> Search Jobs
                                 </button>
                             </form>
-                            <div class="mt-4 px-4 flex flex-wrap gap-4 text-sm text-gray-600">
+                            <!-- <div class="mt-4 px-4 flex flex-wrap gap-4 text-sm text-gray-600">
                                 <span class="font-medium">Popular Searches:</span>
                                 <a href="{{ route('jobs.index', ['job_type' => 'remote']) }}" class="hover:text-indigo-600">Remote Jobs</a>
                                 <a href="{{ route('jobs.index', ['job_type' => 'full-time']) }}" class="hover:text-indigo-600">Full Time</a>
                                 <a href="{{ route('jobs.index', ['experience_level' => 'senior']) }}" class="hover:text-indigo-600">Senior Level</a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

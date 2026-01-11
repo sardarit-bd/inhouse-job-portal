@@ -149,16 +149,34 @@
                     <div class="font-semibold text-gray-900">{{ ucfirst($job->experience_level) }}</div>
                 </div>
                 
+                @if($job->salary_min || $job->salary_max)
                 <div class="text-center p-4 bg-white rounded-lg shadow-sm">
                     <div class="text-sm text-gray-500 mb-1">Salary</div>
                     <div class="font-semibold text-gray-900">
-                        @if($job->salary)
-                            ${{ number_format($job->salary) }}/year
-                        @else
-                            Negotiable
+                        @if($job->salary_min && $job->salary_max)
+                            ${{ number_format($job->salary_min) }} - ${{ number_format($job->salary_max) }}
+                        @elseif($job->salary_min)
+                            From ${{ number_format($job->salary_min) }}
+                        @elseif($job->salary_max)
+                            Up to ${{ number_format($job->salary_max) }}
                         @endif
+                        @if($job->salary_type) / {{ $job->salary_type }} @endif
                     </div>
                 </div>
+                @elseif($job->salary)
+                <!-- Fallback to old salary field if min/max not available -->
+                <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                    <div class="text-sm text-gray-500 mb-1">Salary</div>
+                    <div class="font-semibold text-gray-900">
+                        {{ $job->salary }} {{ $job->salary_currency }}
+                    </div>
+                </div>
+                @else
+                <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                    <div class="text-sm text-gray-500 mb-1">Salary</div>
+                    <div class="font-semibold text-gray-900">Negotiable</div>
+                </div>
+                @endif
             </div>
 
             <!-- Job Description -->
@@ -216,7 +234,7 @@
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Experience Requirements</h3>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <p class="text-gray-700">{{ ucfirst($job->experience_level) }} level experience required</p>
-                        @if($job->experience_level == 'entry')
+                        @if($job->experience_level == 'entry' || $job->experience_level == 'junior')
                             <p class="text-gray-600 mt-2">Fresh graduates are encouraged to apply</p>
                         @elseif($job->experience_level == 'mid')
                             <p class="text-gray-600 mt-2">3-5 years of relevant experience</p>
@@ -353,16 +371,36 @@
                 @endif
                 
                 <!-- Salary Info -->
-                @if($job->salary)
+                @if($job->salary_min || $job->salary_max)
                 <div class="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-lg border border-yellow-100">
                     <div class="flex items-center justify-between">
                         <div>
                             <h4 class="font-bold text-gray-900 text-lg">Salary Package</h4>
-                            <p class="text-gray-600 mt-1">Annual compensation with performance bonuses</p>
+                            <p class="text-gray-600 mt-1">
+                                @if($job->salary_type)
+                                    {{ ucfirst($job->salary_type) }} salary with performance bonuses
+                                @else
+                                    Annual compensation with performance bonuses
+                                @endif
+                            </p>
                         </div>
                         <div class="text-right">
-                            <div class="text-2xl font-bold text-gray-900">${{ number_format($job->salary) }}</div>
-                            <div class="text-gray-600">per year</div>
+                            <div class="text-2xl font-bold text-gray-900">
+                                @if($job->salary_min && $job->salary_max)
+                                    ${{ number_format($job->salary_min) }} - ${{ number_format($job->salary_max) }}
+                                @elseif($job->salary_min)
+                                    From ${{ number_format($job->salary_min) }}
+                                @elseif($job->salary_max)
+                                    Up to ${{ number_format($job->salary_max) }}
+                                @endif
+                            </div>
+                            <div class="text-gray-600">
+                                @if($job->salary_type)
+                                    per {{ $job->salary_type }}
+                                @else
+                                    per year
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -373,7 +411,7 @@
         <!-- Company Info Panel -->
         <div id="company-tab" class="tab-panel hidden">
             <div class="space-y-6">
-                <div class="flex items-center gap-4 mb-6">
+                <!-- <div class="flex items-center gap-4 mb-6">
                     @if($job->company_logo)
                         <img src="{{ asset('storage/' . $job->company_logo) }}" 
                              alt="{{ $job->company_name }}" 
@@ -387,7 +425,7 @@
                         <h3 class="text-2xl font-bold text-gray-900">{{ $job->company_name }}</h3>
                         <p class="text-gray-600 mt-1">Industry Leader</p>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-gray-50 p-6 rounded-lg">
@@ -428,7 +466,7 @@
 </section>
 
 <!-- Apply Modal -->
-<div id="applyModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50">
+<div id="applyModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden p-4 z-50">
     <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
         <div class="p-6">
             <!-- Modal Header -->
@@ -603,19 +641,29 @@ function showTab(tabName) {
 }
 
 // Apply Modal functionality
+// Apply Modal functionality
 function showApplyModal() {
-    document.getElementById('applyModal').classList.remove('hidden');
+    const modal = document.getElementById('applyModal');
+    modal.classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
 }
 
 function closeApplyModal() {
-    document.getElementById('applyModal').classList.add('hidden');
+    const modal = document.getElementById('applyModal');
+    modal.classList.add('hidden');
     document.body.classList.remove('overflow-hidden');
 }
 
 // Close modal when clicking outside
-document.getElementById('applyModal').addEventListener('click', function(e) {
+document.getElementById('applyModal')?.addEventListener('click', function(e) {
     if (e.target.id === 'applyModal') {
+        closeApplyModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
         closeApplyModal();
     }
 });

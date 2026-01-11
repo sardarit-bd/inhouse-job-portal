@@ -35,7 +35,7 @@ class Job extends Model
         'views',
         'category_id',
         'company_id',
-        'is_negotiable', // ✅ এই লাইন যোগ করুন
+        'is_negotiable',
     ];
 
     protected $casts = [
@@ -44,9 +44,10 @@ class Job extends Model
         'application_deadline' => 'date',
         'is_active' => 'boolean',
         'is_negotiable' => 'boolean',
-        'salary_min' => 'decimal:2',
-        'salary_max' => 'decimal:2',
-        // 'salary' => 'decimal:2', // ❌ এই লাইন রিমুভ করুন বা কমেন্ট করুন
+        'views' => 'integer',
+        // Remove decimal casting as it causes issues with null values
+        // 'salary_min' => 'decimal:2', // ❌ Remove this
+        // 'salary_max' => 'decimal:2', // ❌ Remove this
     ];
 
     // ✅ Custom accessor for salary field
@@ -78,41 +79,137 @@ class Job extends Model
         }
     }
 
-    // ✅ Custom accessor for salary_min to handle null
+    // ✅ Custom accessor for salary_min
     public function getSalaryMinAttribute($value)
     {
-        return $value !== null ? (float)$value : null;
+        if ($value === null) {
+            return null;
+        }
+        return (float)$value;
     }
 
-    // ✅ Custom accessor for salary_max to handle null
+    // ✅ Custom mutator for salary_min
+    public function setSalaryMinAttribute($value)
+    {
+        if ($value === '' || $value === null) {
+            $this->attributes['salary_min'] = null;
+        } else {
+            $this->attributes['salary_min'] = (float)$value;
+        }
+    }
+
+    // ✅ Custom accessor for salary_max
     public function getSalaryMaxAttribute($value)
     {
-        return $value !== null ? (float)$value : null;
+        if ($value === null) {
+            return null;
+        }
+        return (float)$value;
     }
 
-    public function user()
+    // ✅ Custom mutator for salary_max
+    public function setSalaryMaxAttribute($value)
+    {
+        if ($value === '' || $value === null) {
+            $this->attributes['salary_max'] = null;
+        } else {
+            $this->attributes['salary_max'] = (float)$value;
+        }
+    }
+
+    // ✅ Formatted salary display
+    public function getFormattedSalaryAttribute()
+    {
+        if ($this->salary_min && $this->salary_max) {
+            $salary = '$' . number_format($this->salary_min, 0) . ' - $' . number_format($this->salary_max, 0);
+        } elseif ($this->salary_min) {
+            $salary = 'From $' . number_format($this->salary_min, 0);
+        } elseif ($this->salary_max) {
+            $salary = 'Up to $' . number_format($this->salary_max, 0);
+        } elseif ($this->salary) {
+            // Use the old salary field as fallback
+            if (is_numeric($this->salary)) {
+                $salary = '$' . number_format((float)$this->salary, 0);
+            } else {
+                $salary = $this->salary;
+            }
+        } else {
+            $salary = 'Negotiable';
+        }
+
+        if ($this->salary_type && !$this->is_negotiable) {
+            $salary .= ' per ' . $this->salary_type;
+        }
+
+        if ($this->is_negotiable) {
+            $salary .= ' (Negotiable)';
+        }
+
+        return $salary;
+    }
+
+    // ✅ Check if job is expired
+    public function getIsExpiredAttribute()
+    {
+        if (!$this->application_deadline) {
+            return false;
+        }
+        return now()->gt($this->application_deadline);
+    }
+
+    // ✅ Check if job is active and approved
+    public function getIsAvailableAttribute()
+    {
+        return $this->is_active && $this->status === 'approved' && !$this->is_expired;
+    }
+
+    // ✅ Relationships
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function applications()
+    public function applications(): HasMany
     {
         return $this->hasMany(JobApplication::class, 'job_id');
     }
 
-    public function views()
+    public function views(): HasMany
     {
         return $this->hasMany(JobView::class, 'job_id');
     }
 
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    // ✅ Increment view with IP tracking
     public function incrementView($ipAddress)
     {
-        if (!$this->views()->where('ip_address', $ipAddress)->exists()) {
-            $this->views()->create(['ip_address' => $ipAddress]);
+        // Check if IP already viewed today
+        $today = now()->format('Y-m-d');
+        $existingView = $this->views()
+            ->where('ip_address', $ipAddress)
+            ->whereDate('viewed_at', $today)
+            ->first();
+
+        if (!$existingView) {
+            $this->views()->create([
+                'ip_address' => $ipAddress,
+                'viewed_at' => now()
+            ]);
+            
             $this->increment('views');
         }
     }
 
+    // ✅ Scopes
     public function scopeActive($query)
     {
         return $query->where('is_active', true)
@@ -124,13 +221,40 @@ class Job extends Model
         return $query->where('status', 'pending');
     }
 
-    public function category(): BelongsTo
+    public function scopeExpired($query)
     {
-        return $this->belongsTo(Category::class);
+        return $query->whereDate('application_deadline', '<', now());
     }
 
-    public function company()
+    // ✅ Application methods
+    public function hasUserApplied($userId = null)
     {
-        return $this->belongsTo(Company::class);
+        if (!$userId && auth()->check()) {
+            $userId = auth()->id();
+        }
+
+        if (!$userId) {
+            return false;
+        }
+
+        return $this->applications()
+            ->where('user_id', $userId)
+            ->exists();
+    }
+
+    // ✅ Get application by user
+    public function getUserApplication($userId = null)
+    {
+        if (!$userId && auth()->check()) {
+            $userId = auth()->id();
+        }
+
+        if (!$userId) {
+            return null;
+        }
+
+        return $this->applications()
+            ->where('user_id', $userId)
+            ->first();
     }
 }

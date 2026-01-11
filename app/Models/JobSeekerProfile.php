@@ -30,4 +30,14 @@ class JobSeekerProfile extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function personalInformation()
+    {
+        return $this->belongsTo(PersonalInformation::class, 'personal_info_id');
+    }
+
+    // Get resume URL
+    public function getResumeUrlAttribute()
+    {
+        return $this->resume_file ? asset('storage/' . $this->resume_file) : null;
+    }
 }

@@ -11,9 +11,9 @@
                             class="h-10 w-auto"
                             alt="Site Logo">
 
-                        <span class="text-xl font-bold text-blue-600">
+                        <!-- <span class="text-xl font-bold text-blue-600">
                             {{ config('app.name') }}
-                        </span>
+                        </span> -->
                     </div>
 
                 @else

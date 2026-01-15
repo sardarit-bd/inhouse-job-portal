@@ -9,7 +9,7 @@
         <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl shadow-xl p-8 text-white mb-8">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold mb-2">Welcome back, {{ auth()->user()->firstName ?? auth()->user()->name }}!</h1>
+                    <h1 class="text-3xl font-bold">Welcome back, {{ auth()->user()->firstName ?? auth()->user()->name }}!</h1>
                     <!-- <p class="text-indigo-100">Here's what's happening with your job search</p> -->
                 </div>
                 <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">

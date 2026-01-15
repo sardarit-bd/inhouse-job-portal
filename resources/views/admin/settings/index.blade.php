@@ -48,7 +48,7 @@
                         <input type="file"
                                name="site_logo"
                                id="site_logo"
-                               accept=".png,.jpg,.jpeg,.gif,.svg"
+                               accept=".png,.jpg,.jpeg,.gif,.svg,.webp"
                                class="block w-full text-sm text-gray-500
                                       file:mr-4 file:py-2 file:px-4
                                       file:rounded-md file:border-0

@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::post('/contact', [PageController::class, 'submitContact'])->name('contact.submit');
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
 Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
 
@@ -80,15 +81,15 @@ Route::middleware(['auth'])->group(function () {
             // Profile stats
             Route::get('/stats', [JobSeekerProfileController::class, 'getProfileStats'])->name('stats');
 
-            // Profile photo routes - CORRECTED HERE
+            // Profile photo routes 
             Route::post('/photo', [JobSeekerProfileController::class, 'updateProfilePhoto'])->name('photo.update');
             Route::delete('/photo', [JobSeekerProfileController::class, 'deleteProfilePhoto'])->name('photo.delete');
             Route::post('/complete-update', [JobSeekerProfileController::class, 'completeUpdate'])->name('complete-update');
 
-            // Job Seeker Profile Routes - Resume routes যোগ করুন
-Route::post('/resume', [JobSeekerProfileController::class, 'uploadResume'])->name('resume.upload');
-Route::delete('/resume', [JobSeekerProfileController::class, 'deleteResume'])->name('resume.delete');
-                       
+            // Job Seeker Profile Routes 
+            Route::post('/resume', [JobSeekerProfileController::class, 'uploadResume'])->name('resume.upload');
+            Route::delete('/resume', [JobSeekerProfileController::class, 'deleteResume'])->name('resume.delete');
+                        
         });
         
         // Applications
@@ -96,11 +97,11 @@ Route::delete('/resume', [JobSeekerProfileController::class, 'deleteResume'])->n
         
     });
 
-    // Application routes (for all authenticated users)
-    Route::post('/jobs/{job}/apply', [ApplicationController::class, 'apply'])->name('jobs.apply');
+        // Application routes (for all authenticated users)
+        Route::post('/jobs/{job}/apply', [ApplicationController::class, 'apply'])->name('jobs.apply');
 
-    // ----- Admin routes -----
-    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+        // ----- Admin routes -----
+        Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
         // Jobs
@@ -128,5 +129,12 @@ Route::delete('/resume', [JobSeekerProfileController::class, 'deleteResume'])->n
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
         Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
         Route::delete('/settings/logo', [SettingController::class, 'deleteLogo'])->name('settings.deleteLogo');
+
+        Route::get('/contact-messages', [PageController::class, 'contactMessages'])->name('contact.messages');
+        Route::get('/contact-messages/{id}', [PageController::class, 'showContactMessage'])->name('contact.show');
+        Route::post('/contact-messages/{id}/reply', [PageController::class, 'replyContactMessage'])->name('contact.reply');
+        Route::put('/contact-messages/{id}', [PageController::class, 'updateContactMessage'])->name('contact.update');
+        Route::delete('/contact-messages/{id}', [PageController::class, 'deleteContactMessage'])->name('contact.delete');
+        
     });
 });

@@ -47,12 +47,6 @@
                                     <i class="fas fa-search mr-2"></i> Search Jobs
                                 </button>
                             </form>
-                            <!-- <div class="mt-4 px-4 flex flex-wrap gap-4 text-sm text-gray-600">
-                                <span class="font-medium">Popular Searches:</span>
-                                <a href="{{ route('jobs.index', ['job_type' => 'remote']) }}" class="hover:text-indigo-600">Remote Jobs</a>
-                                <a href="{{ route('jobs.index', ['job_type' => 'full-time']) }}" class="hover:text-indigo-600">Full Time</a>
-                                <a href="{{ route('jobs.index', ['experience_level' => 'senior']) }}" class="hover:text-indigo-600">Senior Level</a>
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -82,7 +76,6 @@
                     View All Categories
                 </a>
             </div>
-
 
             <!-- Categories Grid -->
             @php
@@ -347,7 +340,6 @@
             </div>
         </div>
     </section>
-
     <!-- How It Works Section End -->
 
     <!-- Testimonials Section Start -->
@@ -355,9 +347,7 @@
         <div class="container mx-auto px-4">
             <!-- Section Title -->
             <div class="text-center mb-6">
-                <!-- <span class="inline-block px-4 py-2 bg-[#BDE8F5] text-[#1C4D8D] rounded-full font-semibold uppercase tracking-wider text-sm mb-4">Testimonials</span> -->
                 <h2 class="text-4xl md:text-5xl font-bold text-[#1C4D8D] mb-6">Success Stories</h2>
-                <!-- <p class="text-[#4988C4] text-lg max-w-2xl mx-auto">Hear from professionals who found their dream jobs through our platform</p> -->
             </div>
 
             <!-- Testimonial Swiper -->
@@ -408,13 +398,13 @@
                 ];
             @endphp
 
-            <!-- Swiper Container -->
-            <div class="relative max-w-6xl mx-auto">
-                <div class="swiper-container testimonial-swiper">
-                    <div class="swiper-wrapper">
+            <!-- Swiper Container - FIXED -->
+            <div class="relative mx-auto">
+                <div class="swiper testimonialSwiper px-4">
+                    <div class="swiper-wrapper py-10">
                         @foreach($testimonials as $testimonial)
                             <div class="swiper-slide">
-                                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#BDE8F5]/30 hover:border-[#4988C4] h-full">
+                                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#BDE8F5]/30 hover:border-[#4988C4] h-full mx-2">
                                     <!-- Rating -->
                                     <div class="mb-6">
                                         @for($i = 1; $i <= 5; $i++)
@@ -454,23 +444,21 @@
                         @endforeach
                     </div>
                     
-                    <!-- Navigation Buttons -->
-                    <div class="absolute top-1/2 left-0 right-0 -translate-y-1/2 z-10 flex justify-between pointer-events-none">
-                        <button class="swiper-button-prev w-12 h-12 rounded-full bg-white shadow-lg hover:shadow-xl hover:bg-gray-50 flex items-center justify-center transition-all duration-300 transform hover:scale-110 pointer-events-auto ml-4">
-                            <i class="fas fa-chevron-left text-[#1C4D8D]"></i>
-                        </button>
-                        <button class="swiper-button-next w-12 h-12 rounded-full bg-white shadow-lg hover:shadow-xl hover:bg-gray-50 flex items-center justify-center transition-all duration-300 transform hover:scale-110 pointer-events-auto mr-4">
-                            <i class="fas fa-chevron-right text-[#1C4D8D]"></i>
-                        </button>
+                    <!-- Navigation Buttons - FIXED POSITION -->
+                    <div class="swiper-button-next !w-12 !h-12 !rounded-full !bg-white !shadow-lg hover:!shadow-xl hover:!bg-gray-50 !flex !items-center !justify-center !transition-all !duration-300 transform hover:!scale-110 !right-0">
+                        <i class="fas fa-chevron-right text-[#1C4D8D] !text-lg"></i>
                     </div>
+                    <div class="swiper-button-prev !w-12 !h-12 !rounded-full !bg-white !shadow-lg hover:!shadow-xl hover:!bg-gray-50 !flex !items-center !justify-center !transition-all !duration-300 transform hover:!scale-110 !left-0">
+                        <i class="fas fa-chevron-left text-[#1C4D8D] !text-lg"></i>
+                    </div>
+                    
+                    <!-- Pagination Dots -->
+                    <div class="swiper-pagination !relative !mt-8"></div>
                 </div>
-                
-                <!-- Pagination Dots -->
-                <div class="swiper-pagination mt-8 !relative"></div>
             </div>
 
             <!-- View More Button -->
-            <div class="text-center mt-12">
+            <!-- <div class="text-center mt-12">
                 <a href="#" 
                    class="inline-flex items-center px-6 py-3 bg-[#1C4D8D] hover:bg-[#4988C4] text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1">
                     View All Success Stories
@@ -478,7 +466,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
                 </a>
-            </div>
+            </div> -->
         </div>
     </div>
     <!-- Testimonials Section End -->
@@ -583,7 +571,7 @@
                     </a>
                     @endauth
                     
-                    <a href="#" 
+                    <a href="http://127.0.0.1:8000/job-seeker/profile" 
                     class="group relative inline-flex items-center justify-center gap-3 bg-transparent border-2 border-white/30 hover:border-white text-white hover:bg-white/10 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 backdrop-blur-sm hover:backdrop-blur-md min-w-[220px]">
                         <div class="absolute inset-0 bg-gradient-to-r from-white/0 to-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -774,6 +762,7 @@
 @endsection
 
 @push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <style>
     .line-clamp-2 {
         display: -webkit-box;
@@ -820,73 +809,86 @@
         background-position: center;
     }
 
-    /* Swiper Custom Styles */
-    .testimonial-swiper {
-        padding: 20px 10px;
+    /* Swiper Custom Styles - UPDATED */
+    .testimonialSwiper {
+        padding: 20px 0 50px !important;
+        overflow: hidden !important;
     }
 
-    .testimonial-swiper .swiper-slide {
-        opacity: 0.4;
-        transition: opacity 0.3s ease;
+    .testimonialSwiper .swiper-wrapper {
+        padding: 10px 0 !important;
     }
 
-    .testimonial-swiper .swiper-slide-active {
-        opacity: 1;
-        transform: scale(1.02);
-        transition: all 0.3s ease;
+    .testimonialSwiper .swiper-slide {
+        height: auto !important;
+        opacity: 0.6 !important;
+        transition: all 0.3s ease !important;
+        transform: scale(0.95) !important;
     }
 
-    .testimonial-swiper .swiper-slide-prev,
-    .testimonial-swiper .swiper-slide-next {
-        opacity: 0.7;
+    .testimonialSwiper .swiper-slide-active {
+        opacity: 0.6 !important;
+        transform: scale(1) !important;
+        z-index: 2 !important;
     }
 
-    .testimonial-swiper .swiper-button-prev,
-    .testimonial-swiper .swiper-button-next {
-        width: 48px;
-        height: 48px;
-        background: white;
-        border-radius: 50%;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-        transition: all 0.3s ease;
+    .testimonialSwiper .swiper-slide-next,
+    .testimonialSwiper .swiper-slide-prev {
+        opacity: 1 !important;
     }
 
-    .testimonial-swiper .swiper-button-prev:hover,
-    .testimonial-swiper .swiper-button-next:hover {
-        background: #f9fafb;
-        transform: scale(1.1);
-        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    /* Navigation Buttons */
+    .testimonialSwiper .swiper-button-next:after,
+    .testimonialSwiper .swiper-button-prev:after {
+        content: '' !important;
     }
 
-    .testimonial-swiper .swiper-button-prev:after,
-    .testimonial-swiper .swiper-button-next:after {
-        font-size: 18px;
-        font-weight: bold;
-        color: #1C4D8D;
+    /* Card Styling */
+    .testimonialSwiper .swiper-slide > div {
+        height: 100% !important;
+        margin: 0 2px !important;
     }
 
-    .testimonial-swiper .swiper-pagination-bullet {
-        width: 12px;
-        height: 12px;
-        background: #BDE8F5;
-        opacity: 0.5;
-        transition: all 0.3s ease;
+    /* Ensure proper spacing */
+    .swiper-wrapper {
+        align-items: stretch !important;
     }
 
-    .testimonial-swiper .swiper-pagination-bullet-active {
-        background: #1C4D8D;
-        opacity: 1;
-        transform: scale(1.2);
+    /* Pagination */
+    .testimonialSwiper .swiper-pagination-bullet {
+        width: 12px !important;
+        height: 12px !important;
+        background: #BDE8F5 !important;
+        opacity: 0.5 !important;
+        transition: all 0.3s ease !important;
     }
 
+    .testimonialSwiper .swiper-pagination-bullet-active {
+        background: #1C4D8D !important;
+        opacity: 1 !important;
+        transform: scale(1.2) !important;
+    }
+
+    /* Responsive adjustments */
     @media (max-width: 768px) {
-        .testimonial-swiper .swiper-button-prev,
-        .testimonial-swiper .swiper-button-next {
-            display: none;
+        .testimonialSwiper {
+            padding: 10px 0 40px !important;
         }
         
-        .testimonial-swiper {
-            padding: 10px 5px;
+        .testimonialSwiper .swiper-slide {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
+        
+        .testimonialSwiper .swiper-button-next,
+        .testimonialSwiper .swiper-button-prev {
+            display: none !important;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .testimonialSwiper .swiper-slide > div {
+            margin: 0 !important;
         }
     }
 </style>
@@ -896,85 +898,114 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Testimonial Swiper
-        const testimonialSwiper = new Swiper('.testimonial-swiper', {
+        console.log('DOM loaded, initializing Swiper...');
+        
+        // Check if Swiper is available
+        if (typeof Swiper === 'undefined') {
+            console.error('Swiper not loaded! Check CDN.');
+            return;
+        }
+        
+        // Initialize Swiper
+        const testimonialSwiper = new Swiper('.testimonialSwiper', {
+            // Basic configuration
             slidesPerView: 1,
-            spaceBetween: 30,
+            spaceBetween: 20,
             loop: true,
+            centeredSlides: false,
+            speed: 600,
+            grabCursor: true,
+            
+            // Autoplay
             autoplay: {
                 delay: 5000,
-                disableOnInteraction: false,
+                disableOnInteraction: true,
                 pauseOnMouseEnter: true,
             },
-            speed: 800,
-            grabCursor: true,
-            centeredSlides: true,
+            
+            // Responsive breakpoints
             breakpoints: {
                 640: {
                     slidesPerView: 1,
-                    spaceBetween: 20,
+                    spaceBetween: 15,
+                    centeredSlides: false,
                 },
                 768: {
                     slidesPerView: 2,
-                    spaceBetween: 30,
+                    spaceBetween: 20,
+                    centeredSlides: false,
                 },
                 1024: {
                     slidesPerView: 3,
-                    spaceBetween: 30,
-                    centeredSlides: false,
-                },
-                1440: {
-                    slidesPerView: 3,
-                    spaceBetween: 30,
-                    centeredSlides: false,
-                },
-                2500: {
-                    slidesPerView: 3,
-                    spaceBetween: 30,
+                    spaceBetween: 25,
                     centeredSlides: false,
                 },
             },
+            
+            // Pagination
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
                 dynamicBullets: true,
             },
+            
+            // Navigation
             navigation: {
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
             },
+            
+            // Events
             on: {
                 init: function() {
-                    this.slides.forEach((slide, index) => {
-                        if (index === this.activeIndex) {
-                            slide.style.opacity = '1';
-                            slide.style.transform = 'scale(1.02)';
-                        }
-                    });
+                    console.log('Swiper initialized successfully');
+                    console.log('Slides count:', this.slides.length);
                 },
                 slideChange: function() {
-                    this.slides.forEach((slide, index) => {
-                        slide.style.opacity = '0.7';
-                        slide.style.transform = 'scale(1)';
-                        if (index === this.activeIndex) {
-                            slide.style.opacity = '0.7';
-                            slide.style.transform = 'scale(1.02)';
-                        } else if (index === this.activeIndex - 1 || index === this.activeIndex + 1) {
-                            slide.style.opacity = '1';
-                        }
-                    });
+                    console.log('Active slide index:', this.activeIndex);
                 }
             }
         });
-
+        
+        // Test navigation buttons
+        const nextBtn = document.querySelector('.swiper-button-next');
+        const prevBtn = document.querySelector('.swiper-button-prev');
+        
+        if (nextBtn && prevBtn) {
+            console.log('Navigation buttons found');
+            
+            nextBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                testimonialSwiper.slideNext();
+            });
+            
+            prevBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                testimonialSwiper.slidePrev();
+            });
+        }
+        
+        // Manual control for testing
+        window.testSwiper = testimonialSwiper;
+        console.log('Swiper instance available as window.testSwiper');
+        
+        // Force update after images load
+        window.addEventListener('load', function() {
+            testimonialSwiper.update();
+            console.log('Swiper updated after page load');
+        });
+        
         // Pause autoplay on hover
-        const swiperContainer = document.querySelector('.testimonial-swiper');
-        swiperContainer.addEventListener('mouseenter', function() {
-            testimonialSwiper.autoplay.stop();
-        });
-        swiperContainer.addEventListener('mouseleave', function() {
-            testimonialSwiper.autoplay.start();
-        });
+        const swiperContainer = document.querySelector('.testimonialSwiper');
+        if (swiperContainer) {
+            swiperContainer.addEventListener('mouseenter', function() {
+                testimonialSwiper.autoplay.stop();
+            });
+            
+            swiperContainer.addEventListener('mouseleave', function() {
+                testimonialSwiper.autoplay.start();
+            });
+        }
 
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {

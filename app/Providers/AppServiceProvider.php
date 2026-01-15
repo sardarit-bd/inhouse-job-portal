@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use App\Models\ContactMessage;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -21,5 +22,12 @@ class AppServiceProvider extends ServiceProvider
         ->value('value');
 
         view()->share('siteLogo', $siteLogo);
+
+        View::composer('layouts.admin', function ($view) {
+            if (auth()->check() && auth()->user()->role === 'admin') {
+                $unreadMessagesCount = ContactMessage::unread()->count();
+                $view->with('unreadMessagesCount', $unreadMessagesCount);
+            }
+        });
     }
 }

@@ -26,7 +26,7 @@ class SettingController extends Controller
     {
         $validated = $request->validate([
             'site_name'        => 'required|string|max:255',
-            'site_logo'        => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:5048',
+            'site_logo'        => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp|max:5048',
             'contact_email'    => 'required|email',
             'contact_phone'    => 'nullable|string|max:50',
             'contact_address'  => 'nullable|string',

@@ -57,7 +57,7 @@
                     <div class="flex items-center gap-3">
                         <img 
                             src="{{ asset('storage/' . $siteLogo) }}" 
-                            class="h-20 w-auto"
+                            class="h-12 w-auto"
                             alt="Site Logo">
                     </div>
 

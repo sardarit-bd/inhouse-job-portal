@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use App\Models\ContactMessage;
+use Illuminate\Support\Facades\Schema;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -17,11 +18,13 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $siteLogo = DB::table('site_settings')
-        ->where('key', 'site_logo')
-        ->value('value');
+        if (Schema::hasTable('site_settings')) {
+            $siteLogo = DB::table('site_settings')
+                ->where('key', 'site_logo')
+                ->value('value');
 
-        view()->share('siteLogo', $siteLogo);
+            view()->share('siteLogo', $siteLogo);
+        }
 
         View::composer('layouts.admin', function ($view) {
             if (auth()->check() && auth()->user()->role === 'admin') {

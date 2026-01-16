@@ -154,79 +154,73 @@
                     @endif
 
                     <!-- Reply Form -->
-                    <form id="replyForm" action="{{ route('admin.contact.reply', $message->id) }}" method="POST">
+                    <form id="replyForm"
+                        action="{{ route('admin.contact.reply', $message->id) }}"
+                        method="POST">
                         @csrf
-                        
+
                         <div class="mb-4">
                             <label for="reply_message" class="block text-sm font-medium text-gray-700 mb-2">
                                 <span class="flex items-center">
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                     </svg>
                                     Reply Message <span class="text-red-500 ml-1">*</span>
                                 </span>
                             </label>
-                            <textarea id="reply_message" 
-                                      name="reply_message" 
-                                      rows="6"
-                                      required
-                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                                      placeholder="Type your reply here...">{{ old('reply_message', $message->admin_reply) }}</textarea>
+
+                            <textarea id="reply_message"
+                                    name="reply_message"
+                                    rows="6"
+                                    required
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                                    placeholder="Type your reply here...">{{ old('reply_message', $message->admin_reply) }}</textarea>
+
                             @error('reply_message')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
-                        </div>
 
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                            <div class="text-sm text-gray-500 bg-gray-50 px-3 py-2 rounded-lg border border-gray-200">
-                                <span class="flex items-center">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                    </svg>
-                                    This reply will be sent to: <strong class="ml-1">{{ $message->email }}</strong>
-                                </span>
-                            </div>
-                            <div class="flex flex-wrap gap-3">
-                                <!-- Status Update Form -->
-                                <form id="statusForm" action="{{ route('admin.contact.update', $message->id) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="relative">
-                                        <select name="status" 
-                                                onchange="this.form.submit()"
-                                                class="border border-gray-300 rounded-lg px-4 py-2.5 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none pr-8">
-                                            <option value="unread" {{ $message->status == 'unread' ? 'selected' : '' }}>Mark as Unread</option>
-                                            <option value="read" {{ $message->status == 'read' ? 'selected' : '' }}>Mark as Read</option>
-                                            <option value="replied" {{ $message->status == 'replied' ? 'selected' : '' }}>Mark as Replied</option>
-                                            <option value="closed" {{ $message->status == 'closed' ? 'selected' : '' }}>Mark as Closed</option>
-                                        </select>
-                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </form>
-                                
-                                <!-- Reply Form Button -->
-                                <button type="submit" 
-                                        form="replyForm"
+                            <!-- Button aligned with textarea -->
+                            <div class="mt-4 flex justify-end">
+                                <button type="submit"
                                         class="flex items-center bg-blue-600 text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-blue-700 transition duration-200 shadow-sm hover:shadow">
                                     @if($message->hasReply())
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                                         </svg>
                                         Update Reply
                                     @else
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                                         </svg>
                                         Send Reply
                                     @endif
                                 </button>
                             </div>
                         </div>
+                    </form>                   
+
+                    <!-- Status Update Form -->
+                    <form id="statusForm"
+                        action="{{ route('admin.contact.update', $message->id) }}"
+                        method="POST"
+                        class="mt-4 inline-block">
+                        @csrf
+                        @method('PUT')
+
+                        <select name="status"
+                                onchange="this.form.submit()"
+                                class="border rounded-lg px-4 py-2">
+                            <option value="unread" {{ $message->status == 'unread' ? 'selected' : '' }}>Unread</option>
+                            <option value="read" {{ $message->status == 'read' ? 'selected' : '' }}>Read</option>
+                            <option value="replied" {{ $message->status == 'replied' ? 'selected' : '' }}>Replied</option>
+                            <option value="closed" {{ $message->status == 'closed' ? 'selected' : '' }}>Closed</option>
+                        </select>
                     </form>
+
                 </div>
             </div>
         </div>

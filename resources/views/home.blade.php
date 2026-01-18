@@ -14,7 +14,7 @@
             <div class="relative h-full flex items-center hero-section">
                 <div class="container px-4">
                     <div class="max-w-3xl mx-auto text-center">
-                        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 animate-fade-in-up">
+                        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-gray leading-tight mb-6 animate-fade-in-up">
                             Find Your Dream Career Opportunity
                         </h1>
                         <p class="text-xl text-white/90 mb-10 max-w-2xl mx-auto animate-fade-in-up animation-delay-200">
@@ -29,11 +29,11 @@
                                         <i class="fas fa-search absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                                         <input type="text" 
                                                name="search"
-                                               placeholder="Job Title, Keywords, or Company" 
+                                               placeholder="Job Title, Keywords, or Category" 
                                                class="w-full pl-14 pr-6 py-5 rounded-xl border-0 focus:ring-2 focus:ring-indigo-500 text-lg bg-white/50 backdrop-blur-sm">
                                     </div>
                                 </div>
-                                <div class="md:w-64">
+                                <!-- <div class="md:w-64">
                                     <div class="relative">
                                         <i class="fas fa-map-marker-alt absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                                         <input type="text" 
@@ -41,7 +41,7 @@
                                                placeholder="City, State, or Remote" 
                                                class="w-full pl-14 pr-6 py-5 rounded-xl border-0 focus:ring-2 focus:ring-indigo-500 text-lg bg-white/50 backdrop-blur-sm">
                                     </div>
-                                </div>
+                                </div> -->
                                 <button type="submit" 
                                         class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-10 py-5 font-bold text-lg transition-all duration-300 whitespace-nowrap shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                                     <i class="fas fa-search mr-2"></i> Search Jobs
@@ -343,14 +343,14 @@
     <!-- How It Works Section End -->
 
     <!-- Testimonials Section Start -->
-    <div class="py-20 bg-gradient-to-r from-gray-50 to-white overflow-hidden">
+    <!-- <div class="py-20 bg-gradient-to-r from-gray-50 to-white overflow-hidden">
         <div class="container mx-auto px-4">
-            <!-- Section Title -->
+           
             <div class="text-center mb-6">
                 <h2 class="text-4xl md:text-5xl font-bold text-[#1C4D8D] mb-6">Success Stories</h2>
             </div>
 
-            <!-- Testimonial Swiper -->
+            
             @php
                 $testimonials = [
                     [
@@ -398,27 +398,25 @@
                 ];
             @endphp
 
-            <!-- Swiper Container - FIXED -->
+           
             <div class="relative mx-auto">
                 <div class="swiper testimonialSwiper px-4">
                     <div class="swiper-wrapper py-10">
                         @foreach($testimonials as $testimonial)
                             <div class="swiper-slide">
                                 <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#BDE8F5]/30 hover:border-[#4988C4] h-full mx-2">
-                                    <!-- Rating -->
+                    
                                     <div class="mb-6">
                                         @for($i = 1; $i <= 5; $i++)
                                             <i class="fas fa-star text-yellow-400 text-lg"></i>
                                         @endfor
                                     </div>
-                                    
-                                    <!-- Testimonial Content -->
+                             
                                     <p class="text-gray-700 text-lg italic leading-relaxed mb-8">
                                         <i class="fas fa-quote-left text-[#BDE8F5] text-2xl mr-3 align-top"></i>
                                         {{ $testimonial['content'] }}
                                     </p>
-                                    
-                                    <!-- Author Info -->
+                              
                                     <div class="flex items-center gap-4">
                                         <div class="w-16 h-16 rounded-full overflow-hidden border-4 border-[#BDE8F5] flex-shrink-0">
                                             <img src="{{ asset('assets/img/testmonial/' . $testimonial['avatar']) }}" 
@@ -431,8 +429,7 @@
                                             <p class="text-gray-600 text-sm">{{ $testimonial['company'] }}</p>
                                         </div>
                                     </div>
-                                    
-                                    <!-- Time Info -->
+                                 
                                     <div class="mt-6 pt-6 border-t border-gray-100">
                                         <div class="flex items-center text-gray-500">
                                             <i class="far fa-clock mr-2"></i>
@@ -444,21 +441,18 @@
                         @endforeach
                     </div>
                     
-                    <!-- Navigation Buttons - FIXED POSITION -->
                     <div class="swiper-button-next !w-12 !h-12 !rounded-full !bg-white !shadow-lg hover:!shadow-xl hover:!bg-gray-50 !flex !items-center !justify-center !transition-all !duration-300 transform hover:!scale-110 !right-0">
                         <i class="fas fa-chevron-right text-[#1C4D8D] !text-lg"></i>
                     </div>
                     <div class="swiper-button-prev !w-12 !h-12 !rounded-full !bg-white !shadow-lg hover:!shadow-xl hover:!bg-gray-50 !flex !items-center !justify-center !transition-all !duration-300 transform hover:!scale-110 !left-0">
                         <i class="fas fa-chevron-left text-[#1C4D8D] !text-lg"></i>
                     </div>
-                    
-                    <!-- Pagination Dots -->
+                   
                     <div class="swiper-pagination !relative !mt-8"></div>
                 </div>
             </div>
 
-            <!-- View More Button -->
-            <!-- <div class="text-center mt-12">
+            <div class="text-center mt-12">
                 <a href="#" 
                    class="inline-flex items-center px-6 py-3 bg-[#1C4D8D] hover:bg-[#4988C4] text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1">
                     View All Success Stories
@@ -466,12 +460,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
                 </a>
-            </div> -->
+            </div>
         </div>
-    </div>
+    </div> -->
     <!-- Testimonials Section End -->
 
-    <section class="py-32 bg-white">
+    <!-- <section class="py-32 bg-white">
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
             {{-- Left Content --}}
@@ -517,7 +511,7 @@
             </div>
 
         </div>
-    </section>
+    </section> -->
 
     <!-- Call to Action Start -->
     <div class="relative py-28 overflow-hidden">
@@ -552,8 +546,8 @@
                     @auth
                         @if(auth()->user()->isJobSeeker())
                         <a href="{{ route('job-seeker.professional-profile.edit') }}" 
-                        class="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-2xl hover:shadow-3xl hover:-translate-y-1 min-w-[220px]">
-                            <div class="absolute inset-0 bg-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        class="group relative inline-flex items-center justify-center gap-3 bg-transparent border-2 border-white/30 hover:border-white text-white hover:bg-white/10 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 backdrop-blur-sm hover:backdrop-blur-md min-w-[220px]">
+                        <div class="absolute inset-0 bg-gradient-to-r from-white/0 to-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
@@ -571,14 +565,14 @@
                     </a>
                     @endauth
                     
-                    <a href="http://127.0.0.1:8000/job-seeker/professional-profile" 
+                    <!-- <a href="http://127.0.0.1:8000/job-seeker/professional-profile" 
                     class="group relative inline-flex items-center justify-center gap-3 bg-transparent border-2 border-white/30 hover:border-white text-white hover:bg-white/10 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 backdrop-blur-sm hover:backdrop-blur-md min-w-[220px]">
                         <div class="absolute inset-0 bg-gradient-to-r from-white/0 to-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                         </svg>
                         <span>Upload Resume</span>
-                    </a>
+                    </a> -->
                 </div>
             </div>
         </div>
@@ -603,16 +597,16 @@
     </style>
 
     <!-- Top Companies Section Start -->
-    <div class="py-20 bg-white">
+    <!-- <div class="py-20 bg-white">
         <div class="container mx-auto px-4">
-            <!-- Section Title -->
+            
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-10">
                 <div>
                     <h2 class="text-3xl md:text-3xl font-bold text-gray-900 mb-2">Top Hiring Companies</h2>
                 </div>
             </div>
 
-            <!-- Companies Grid -->
+           
             @php
                 $companies = \App\Models\Company::where('is_active', true)
                     ->withCount(['jobs' => function($query) {
@@ -650,7 +644,7 @@
                 </div>
             @endif
         </div>
-    </div>
+    </div> -->
     <!-- Top Companies Section End -->
 
     <!-- Blog Section Start -->

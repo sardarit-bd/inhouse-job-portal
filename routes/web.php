@@ -8,11 +8,13 @@ use App\Http\Controllers\Admin\CompanyController as AdminCompanyController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\JobSeeker\DashboardController as JobSeekerDashboardController;
+use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\JobSeekerProfileController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BlogController;
 use Illuminate\Support\Facades\Route;
 
 // ----------------- Public routes -----------------
@@ -22,6 +24,9 @@ Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [PageController::class, 'submitContact'])->name('contact.submit');
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
 Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
+// Public blog routes
+Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
+Route::get('/blogs/{blog:slug}', [BlogController::class, 'show'])->name('blogs.show');
 
 // ----------------- Auth routes -----------------
 require __DIR__.'/auth.php';
@@ -119,6 +124,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Companies
         Route::resource('companies', AdminCompanyController::class);
+
+        // Blogs
+        Route::resource('blogs', AdminBlogController::class);
+        Route::patch('/blogs/{blog}/toggle-status', [AdminBlogController::class, 'toggleStatus'])->name('blogs.toggle-status');
+        Route::patch('/blogs/{blog}/toggle-featured', [AdminBlogController::class, 'toggleFeatured'])->name('blogs.toggle-featured');
 
         // Settings
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');

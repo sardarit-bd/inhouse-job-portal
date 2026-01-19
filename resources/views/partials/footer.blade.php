@@ -46,7 +46,7 @@
                 <p class="text-gray-400 mb-6">Heaven fruitful doesn't over lesser in days. Appear creeping.</p>
                 <form class="flex">
                     <input type="email" placeholder="Email Address" class="flex-1 px-4 py-3 rounded-l-lg text-gray-900 focus:outline-none">
-                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-r-lg">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-r-lg">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
@@ -73,17 +73,17 @@
             
             <!-- Stats -->
             <div>
-                <div class="text-4xl font-bold text-indigo-400 mb-2">{{ $totalJobs }}</div>
+                <div class="text-4xl font-bold text-blue-700 mb-2">{{ $totalJobs }}</div>
                 <div class="text-gray-400">Available Jobs</div>
             </div>
             
             <div>
-                <div class="text-4xl font-bold text-indigo-400 mb-2">{{ $totalCompanies }}</div>
+                <div class="text-4xl font-bold text-blue-700 mb-2">{{ $totalCompanies }}</div>
                 <div class="text-gray-400">Registered Companies</div>
             </div>
             
             <div>
-                <div class="text-4xl font-bold text-indigo-400 mb-2">{{ $totalApplicants }}</div>
+                <div class="text-4xl font-bold text-blue-700 mb-2">{{ $totalApplicants }}</div>
                 <div class="text-gray-400">Applicants</div>
             </div>
         </div>
@@ -93,22 +93,22 @@
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="text-gray-400 text-center md:text-left mb-4 md:mb-0">
                     <p>Copyright &copy; {{ date('Y') }} All rights reserved | 
-                       <a href="{{ route('home') }}" class="text-indigo-400 hover:text-white">
+                       <a href="{{ route('home') }}" class="text-blue-700 hover:text-white">
                            {{ $siteSettings['site_name'] ?? config('app.name') }}
                        </a>
                     </p>
                 </div>
                 <div class="flex space-x-4">
-                    <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-indigo-600">
+                    <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-indigo-600">
+                    <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-indigo-600">
+                    <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600">
                         <i class="fas fa-globe"></i>
                     </a>
-                    <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-indigo-600">
+                    <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600">
                         <i class="fab fa-behance"></i>
                     </a>
                 </div>

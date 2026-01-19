@@ -30,7 +30,7 @@
                                         <input type="text" 
                                                name="search"
                                                placeholder="Job Title, Keywords, or Category" 
-                                               class="w-full pl-14 pr-6 py-5 rounded-xl border-0 focus:ring-2 focus:ring-indigo-500 text-lg bg-white/50 backdrop-blur-sm">
+                                               class="w-full pl-14 pr-6 py-5 rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-lg bg-white/50 backdrop-blur-sm">
                                     </div>
                                 </div>
                                 <!-- <div class="md:w-64">
@@ -39,11 +39,11 @@
                                         <input type="text" 
                                                name="location"
                                                placeholder="City, State, or Remote" 
-                                               class="w-full pl-14 pr-6 py-5 rounded-xl border-0 focus:ring-2 focus:ring-indigo-500 text-lg bg-white/50 backdrop-blur-sm">
+                                               class="w-full pl-14 pr-6 py-5 rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-lg bg-white/50 backdrop-blur-sm">
                                     </div>
                                 </div> -->
                                 <button type="submit" 
-                                        class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-10 py-5 font-bold text-lg transition-all duration-300 whitespace-nowrap shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                                        class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-10 py-5 font-bold text-lg transition-all duration-300 whitespace-nowrap shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                                     <i class="fas fa-search mr-2"></i> Search Jobs
                                 </button>
                             </form>
@@ -72,7 +72,7 @@
                 </h2>
 
                 <a href="{{ route('jobs.index') }}" 
-                class="text-indigo-600 font-bold text-lg hover:underline transition-all duration-300">
+                class="text-blue-600 font-bold text-lg hover:underline transition-all duration-300">
                     View All Categories
                 </a>
             </div>
@@ -92,8 +92,8 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                     @foreach($categories as $category)
                         <a href="{{ route('jobs.index', ['category' => $category->id]) }}" 
-                           class="group bg-gray-50 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-white rounded-2xl p-8 text-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-gray-200 hover:border-indigo-200">
-                            <h3 class="text-xl font-bold text-blue-500 mb-2 group-hover:text-indigo-700">{{ $category->name }}</h3>
+                           class="group bg-gray-50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-white rounded-2xl p-8 text-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-gray-200 hover:border-blue-200">
+                            <h3 class="text-xl font-bold text-blue-600 mb-2 group-hover:text-blue-700">{{ $category->name }}</h3>
                             <p class="text-gray-600 text-sm">{{ $category->jobs_count }} open jobs</p>
                         </a>
                     @endforeach
@@ -117,7 +117,7 @@
             <div class="flex flex-col md:flex-row items-center justify-between mb-10">
                 <h2 class="text-3xl md:text-3xl font-bold text-gray-900 mb-3">Latest Job Opportunities</h2>
                 <a href="{{ route('jobs.index') }}" 
-                   class="text-indigo-600 font-bold text-lg hover:underline transition-all duration-300">
+                   class="text-blue-600 font-bold text-lg hover:underline transition-all duration-300">
                     View All Jobs
                 </a>
             </div>
@@ -134,7 +134,7 @@
             @if($featuredJobs->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($featuredJobs as $job)
-                <div class="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-indigo-200 hover:-translate-y-1">
+                <div class="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-blue-200 hover:-translate-y-1">
                     <!-- Job Type Badge -->
                     <div class="absolute top-4 right-4">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold 
@@ -151,20 +151,20 @@
                         <!-- Company & Title -->
                         <div class="flex items-start gap-4 mb-5">
                             <div class="flex-shrink-0">
-                                <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-50 to-purple-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                                <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-50 to-purple-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                                     @if ($job->company_logo)
                                             <img src="{{ asset('storage/' . $job->company_logo) }}"
                                                 alt="{{ $job->company_name }}"
                                                 class="w-14 h-14 rounded-sm object-cover border border-gray-200">
                                         @else
-                                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                                     </svg>
                                     @endif
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <h3 class="text-lg font-bold text-gray-900 truncate group-hover:text-indigo-700 transition-colors">
+                                <h3 class="text-lg font-bold text-gray-900 truncate group-hover:text-blue-700 transition-colors">
                                     <a href="{{ route('jobs.show', $job) }}" class="hover:underline">{{ $job->title }}</a>
                                 </h3>
                                 <p class="text-sm font-medium text-gray-700 mt-1">{{ $job->company ? $job->company->name : ($job->company_name ?? '') }}</p>
@@ -255,7 +255,7 @@
                                 {{ $job->created_at->diffForHumans() }}
                             </div>
                             <a href="{{ route('jobs.show', $job) }}" 
-                            class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-all duration-300 transform group-hover:scale-105 hover:shadow-md">
+                            class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all duration-300 transform group-hover:scale-105 hover:shadow-md">
                                 Apply Now
                                 <svg class="w-3.5 h-3.5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -504,7 +504,7 @@
                 >
 
                 {{-- Since Badge --}}
-                <div class="absolute bottom-0 left-0 bg-indigo-900 text-white px-6 py-5 text-center">
+                <div class="absolute bottom-0 left-0 bg-blue-900 text-white px-6 py-5 text-center">
                     <p class="text-xs uppercase tracking-wide">Since</p>
                     <span class="text-3xl font-bold">2014</span>
                 </div>
@@ -520,7 +520,10 @@
         <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
             class="w-full h-full object-cover object-center scale-105 animate-zoom-slow">
             
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-blue-700/70 backdrop-blur-[2px]"></div>
+        <div class="absolute inset-0 bg-white/8 backdrop-blur-sm"></div>
+
+
+
     </div>
 
         <!-- Animated Elements -->
@@ -621,7 +624,7 @@
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                     @foreach($companies as $company)
                         <a href="{{ route('jobs.index', ['company' => $company->id]) }}" 
-                           class="group bg-gray-50 hover:bg-white rounded-lg p-6 text-center transition-all duration-300 hover:shadow-xl border border-gray-200 hover:border-indigo-200">
+                           class="group bg-gray-50 hover:bg-white rounded-lg p-6 text-center transition-all duration-300 hover:shadow-xl border border-gray-200 hover:border-blue-200">
                             <div class="w-20 h-20 mx-auto mb-4 rounded-xl bg-white p-3 flex items-center justify-center group-hover:shadow-md transition-all duration-300">
                                 @if($company->logo)
                                     <img src="{{ asset('storage/' . $company->logo) }}" 
@@ -631,7 +634,7 @@
                                     <i class="fas fa-building text-3xl text-gray-400"></i>
                                 @endif
                             </div>
-                            <h3 class="font-bold text-gray-900 group-hover:text-indigo-700 mb-1">{{ $company->name }}</h3>
+                            <h3 class="font-bold text-gray-900 group-hover:text-blue-700 mb-1">{{ $company->name }}</h3>
                         </a>
                     @endforeach
                 </div>
@@ -648,110 +651,103 @@
     <!-- Top Companies Section End -->
 
     <!-- Blog Section Start -->
-    <div class="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div class="container mx-auto px-4">
-            <!-- Section Title -->
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-4xl font-bold text-gray-900 mb-6">Career Tips & Insights</h2>
-            </div>
+    <!-- Blogs Section -->
+@php
+    use App\Models\Blog;
+    $featuredBlogs = Blog::published()
+        ->featured()
+        ->orderBy('published_at', 'desc')
+        ->take(3)
+        ->get();
+    
+    if ($featuredBlogs->count() < 3) {
+        $additionalBlogs = Blog::published()
+            ->whereNotIn('id', $featuredBlogs->pluck('id'))
+            ->orderBy('published_at', 'desc')
+            ->take(3 - $featuredBlogs->count())
+            ->get();
+        $featuredBlogs = $featuredBlogs->merge($additionalBlogs);
+    }
+@endphp
 
-            <!-- Blog Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Blog Post 1 -->
-                <div class="bg-white overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group">
-                    <div class="relative overflow-hidden">
-                        <img src="{{ asset('assets/img/blog/home-blog1.jpg') }}" 
-                             alt="Resume Building Tips" 
+@if($featuredBlogs->count() > 0)
+<section class="py-12 bg-gradient-to-b from-gray-50 to-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-gray-800 mb-3">Latest Insights & Tips</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Stay updated with career advice, industry trends, and job search tips from our experts.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach($featuredBlogs as $blog)
+            <div class="bg-white overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group">
+                <div class="relative overflow-hidden">
+                    @if($blog->featured_image)
+                        <img src="{{ asset('storage/' . $blog->featured_image) }}" 
+                             alt="{{ $blog->title }}" 
                              class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-6 left-6">
-                            <div class="bg-white px-4 py-3 rounded-xl text-center shadow-md">
-                                <div class="text-xl font-bold text-gray-900">24</div>
-                                <div class="text-gray-600 text-xs">Jan</div>
+                    @else
+                        <div class="w-full h-56 bg-gradient-to-r from-blue-100 to-indigo-100 flex items-center justify-center">
+                            <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                    @endif
+                    <div class="absolute top-6 left-6">
+                        <div class="bg-white px-4 py-3 rounded-xl text-center shadow-md">
+                            <div class="text-xl font-bold text-gray-900">
+                                {{ $blog->published_at ? $blog->published_at->format('d') : '??' }}
+                            </div>
+                            <div class="text-gray-600 text-xs">
+                                {{ $blog->published_at ? $blog->published_at->format('M') : '---' }}
                             </div>
                         </div>
                     </div>
-                    <div class="p-8">
-                        <div class="flex items-center text-sm text-gray-500 mb-4">
-                            <span class="bg-[#BDE8F5] text-[#1C4D8D] px-3 py-1 rounded-full text-xs font-medium mr-3">Career Tips</span>
-                            <span><i class="far fa-clock mr-1"></i> 5 min read</span>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#1C4D8D] transition-colors">
-                            <a href="#">5 Essential Tips for Building a Winning Resume in 2024</a>
-                        </h3>
-                        <p class="text-gray-600 mb-6">Learn how to create a resume that stands out to recruiters and gets you more interview calls.</p>
-                        <a href="#" class="inline-flex items-center gap-2 text-[#1C4D8D] hover:text-[#4988C4] font-bold">
-                            Read More <i class="fas fa-arrow-right text-sm"></i>
-                        </a>
-                    </div>
                 </div>
-
-                <!-- Blog Post 2 -->
-                <div class="bg-white overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group">
-                    <div class="relative overflow-hidden">
-                        <img src="{{ asset('assets/img/blog/home-blog2.jpg') }}" 
-                             alt="Interview Preparation" 
-                             class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-6 left-6">
-                            <div class="bg-white px-4 py-3 rounded-xl text-center shadow-md">
-                                <div class="text-xl font-bold text-gray-900">20</div>
-                                <div class="text-gray-600 text-xs">Jan</div>
-                            </div>
-                        </div>
+                <div class="p-8">
+                    <div class="flex items-center text-sm text-gray-500 mb-4">
+                        <span class="bg-[#BDE8F5] text-[#1C4D8D] px-3 py-1 rounded-full text-xs font-medium mr-3">
+                            {{ $blog->category ?? 'Career Tips' }}
+                        </span>
+                        <span>
+                            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            {{ $blog->reading_time }} min read
+                        </span>
                     </div>
-                    <div class="p-8">
-                        <div class="flex items-center text-sm text-gray-500 mb-4">
-                            <span class="bg-[#BDE8F5] text-[#1C4D8D] px-3 py-1 rounded-full text-xs font-medium mr-3">Interviews</span>
-                            <span><i class="far fa-clock mr-1"></i> 7 min read</span>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#1C4D8D] transition-colors">
-                            <a href="#">Ace Your Next Job Interview: Common Questions & Best Answers</a>
-                        </h3>
-                        <p class="text-gray-600 mb-6">Prepare for success with our guide to the most common interview questions and expert-approved answers.</p>
-                        <a href="#" class="inline-flex items-center gap-2 text-[#1C4D8D] hover:text-[#4988C4] font-bold">
-                            Read More <i class="fas fa-arrow-right text-sm"></i>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#1C4D8D] transition-colors">
+                        <a href="{{ route('blogs.show', $blog->slug) }}">
+                            {{ $blog->title }}
                         </a>
-                    </div>
-                </div>
-
-                <!-- Blog Post 3 -->
-                <div class="bg-white overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group">
-                    <div class="relative overflow-hidden">
-                        <img src="{{ asset('assets/img/blog/home-blog2.jpg') }}" 
-                             alt="Remote Work Guide" 
-                             class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-6 left-6">
-                            <div class="bg-white px-4 py-3 rounded-xl text-center shadow-md">
-                                <div class="text-xl font-bold text-gray-900">18</div>
-                                <div class="text-gray-600 text-xs">Jan</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-8">
-                        <div class="flex items-center text-sm text-gray-500 mb-4">
-                            <span class="bg-[#BDE8F5] text-[#1C4D8D] px-3 py-1 rounded-full text-xs font-medium mr-3">Remote Work</span>
-                            <span><i class="far fa-clock mr-1"></i> 6 min read</span>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#1C4D8D] transition-colors">
-                            <a href="#">The Ultimate Guide to Succeeding in Remote Work Environments</a>
-                        </h3>
-                        <p class="text-gray-600 mb-6">Master the skills and habits needed to excel in remote work settings and maintain work-life balance.</p>
-                        <a href="#" class="inline-flex items-center gap-2 text-[#1C4D8D] hover:text-[#4988C4] font-bold">
-                            Read More <i class="fas fa-arrow-right text-sm"></i>
-                        </a>
-                    </div>
+                    </h3>
+                    <p class="text-gray-600 mb-6 line-clamp-3">
+                        {{ $blog->excerpt ?? Str::limit(strip_tags($blog->content), 120) }}
+                    </p>
+                    <a href="{{ route('blogs.show', $blog->slug) }}" 
+                       class="inline-flex items-center gap-2 text-[#1C4D8D] hover:text-[#4988C4] font-bold">
+                        Read More 
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </a>
                 </div>
             </div>
-
-            <!-- View More Button -->
-            <div class="mt-12 flex justify-end">
-                <a href="#"
-                class="text-[#1C4D8D] font-semibold text-lg hover:underline underline-offset-8 transition">
-                    View All Articles
-                </a>
-            </div>
-
+            @endforeach
+        </div>
+        
+        <div class="text-center mt-10">
+            <a href="{{ route('blogs.index') }}" 
+               class="inline-flex items-center px-6 py-3 bg-[#1C4D8D] text-white font-medium rounded-lg hover:bg-[#4988C4] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1C4D8D] transition-colors">
+                View All Articles
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
         </div>
     </div>
+</section>
+@endif
     <!-- Blog Section End -->
 @endsection
 

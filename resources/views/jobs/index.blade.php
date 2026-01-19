@@ -72,7 +72,7 @@
             <!-- Left Side - Fixed Width Filter -->
             <div class="lg:w-64 flex-shrink-0">
                 <div class="bg-white rounded-lg border border-gray-200 p-5 sticky top-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Filter Jobs</h3>
+                    <h3 class="text-lg text-center font-semibold text-gray-900 mb-4">Filter Jobs: <span class="text-blue-700">{{ $jobs->total()}}</span></h3>
                     
                     <form method="GET" action="{{ route('jobs.index') }}" class="space-y-5" id="filterForm">
                         <!-- Search -->
@@ -171,12 +171,12 @@
             <!-- Right Side - Cards with smaller width -->
             <div class="flex-1 min-w-0">
                 <!-- Header -->
-                <div class="mb-6">
+                <!-- <div class="mb-6">
                     <h1 class="text-xl font-bold text-right mr-2 text-gray-900">Jobs Found: {{ $jobs->total() }} </h1>
-                    <!-- @if($jobs->total() > 0)
+                    @if($jobs->total() > 0)
                         <p class="text-gray-600 text-sm mt-1">Browse opportunities that match your skills</p>
-                    @endif -->
-                </div>
+                    @endif
+                </div> -->
 
                 @if ($jobs && $jobs->count() > 0)
                     <!-- Smaller Cards with 3 columns -->

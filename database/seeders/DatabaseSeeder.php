@@ -56,5 +56,9 @@ class DatabaseSeeder extends Seeder
         SiteSetting::create(['key' => 'contact_phone', 'value' => '019XXXXXXXX']);
         SiteSetting::create(['key' => 'contact_address', 'value' => 'XYZ, City, Country']);
         SiteSetting::create(['key' => 'about_us', 'value' => 'We are a leading job portal connecting talented professionals with great opportunities.']);
+
+        $this->call([
+            BlogSeeder::class,
+        ]);
     }
 }

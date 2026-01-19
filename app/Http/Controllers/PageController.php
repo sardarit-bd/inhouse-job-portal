@@ -24,7 +24,25 @@ class PageController extends Controller
             ->take(8)
             ->get();
         
-        return view('home', compact('featuredJobs', 'recentJobs'));
+        // Get featured blogs
+        $featuredBlogs = \App\Models\Blog::published()
+            ->featured()
+            ->orderBy('published_at', 'desc')
+            ->take(3)
+            ->get();
+        
+        // Get recent blogs if less than 3 featured
+        if ($featuredBlogs->count() < 3) {
+            $additionalBlogs = \App\Models\Blog::published()
+                ->whereNotIn('id', $featuredBlogs->pluck('id'))
+                ->orderBy('published_at', 'desc')
+                ->take(3 - $featuredBlogs->count())
+                ->get();
+            
+            $featuredBlogs = $featuredBlogs->merge($additionalBlogs);
+        }
+        
+        return view('home', compact('featuredJobs', 'recentJobs', 'featuredBlogs'));
     }
 
     public function about()

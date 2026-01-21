@@ -791,7 +791,7 @@
                         
                         <div class="mb-4">
                             <label for="custom_message" class="block text-sm font-medium text-gray-700 mb-2">
-                                Your Message *
+                                Your Message <span class="text-red-600">*</span>
                             </label>
                             <textarea 
                                 name="message" 
@@ -800,9 +800,9 @@
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                 placeholder="Write your custom message here..."
                                 required></textarea>
-                            <p class="mt-1 text-xs text-gray-500">
+                            <!-- <p class="mt-1 text-xs text-gray-500">
                                 This message will be sent as an email to the applicant.
-                            </p>
+                            </p> -->
                         </div>
                         
                         <div id="emailResponse" class="hidden mb-4"></div>

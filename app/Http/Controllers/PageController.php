@@ -18,19 +18,19 @@ class PageController extends Controller
             ->orderBy('created_at', 'desc')
             ->take(6)
             ->get();
-            
+
         $recentJobs = Job::active()
             ->orderBy('created_at', 'desc')
             ->take(8)
             ->get();
-        
+
         // Get featured blogs
         $featuredBlogs = \App\Models\Blog::published()
             ->featured()
             ->orderBy('published_at', 'desc')
             ->take(3)
             ->get();
-        
+
         // Get recent blogs if less than 3 featured
         if ($featuredBlogs->count() < 3) {
             $additionalBlogs = \App\Models\Blog::published()
@@ -38,10 +38,10 @@ class PageController extends Controller
                 ->orderBy('published_at', 'desc')
                 ->take(3 - $featuredBlogs->count())
                 ->get();
-            
+
             $featuredBlogs = $featuredBlogs->merge($additionalBlogs);
         }
-        
+
         return view('home', compact('featuredJobs', 'recentJobs', 'featuredBlogs'));
     }
 
@@ -58,8 +58,18 @@ class PageController extends Controller
             'phone' => SiteSetting::getValue('contact_phone', '+880 1900-000000'),
             'address' => SiteSetting::getValue('contact_address', '123 Street, City, Country'),
         ];
-        
+
         return view('pages.contact', compact('contact'));
+    }
+
+    public function terms()
+    {
+        return view('pages.terms');
+    }
+
+    public function privacy()
+    {
+        return view('pages.privacy');
     }
 
     public function submitContact(Request $request)

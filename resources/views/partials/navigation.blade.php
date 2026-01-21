@@ -6,8 +6,8 @@
             <a href="{{ url('/') }}">
                 @if($siteLogo)
                     <div class="flex items-center gap-3">
-                        <img 
-                            src="{{ asset('storage/' . $siteLogo) }}" 
+                        <img
+                            src="{{ asset('storage/' . $siteLogo) }}"
                             class="h-10 w-auto"
                             alt="Site Logo">
 
@@ -40,7 +40,7 @@
                         </svg>
                     </button>
 
-                    <ul class="absolute top-full left-0 mt-4 w-48 bg-white shadow-lg py-2 
+                    <ul class="absolute top-full left-0 mt-4 w-48 bg-white shadow-lg py-2
                                opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                         <li><a href="#" class="block px-5 py-2 hover:bg-blue-50">Blog</a></li>
                         <li><a href="#" class="block px-5 py-2 hover:bg-blue-50">Job Details</a></li>
@@ -48,6 +48,8 @@
                 </li> -->
 
                 <li><a href="{{ route('contact') }}" class="hover:text-blue-600 transition">Contact</a></li>
+                <li><a href="{{ route('terms') }}" class="hover:text-blue-600 transition">Terms & Conditions</a></li>
+                <li><a href="{{ route('privacy') }}" class="hover:text-blue-600 transition">Privacy Policy</a></li>
             </ul>
 
             <!-- Right Side -->
@@ -58,13 +60,13 @@
                 <div class="relative">
                     <button @click="openUser = !openUser"
                         class="flex items-center gap-3 px-4 py-2 rounded-lg border border-blue-600 text-blue-600 font-medium">
-                        
+
                         @php
                             $user = auth()->user();
                         @endphp
 
                         @if($user && $user->profile_photo)
-                            <img 
+                            <img
                                 src="{{ asset('storage/' . $user->profile_photo) }}"
                                 alt="{{ $user->name }}"
                                 class="w-8 h-8 rounded-full object-cover border border-gray-300">
@@ -89,7 +91,7 @@
                     <!-- Dropdown -->
                     <div x-show="openUser" @click.outside="openUser=false" x-transition
                          class="absolute right-0 mt-3 w-52 bg-white shadow-lg border border-gray-100">
-                        
+
                         @if(auth()->user()->isAdmin())
                             <a href="{{ route('admin.dashboard') }}"
                                class="block px-5 py-3 hover:bg-blue-50">
@@ -134,7 +136,7 @@
                         Login
                     </span>
 
-                    <span class="absolute inset-0 bg-blue-600 
+                    <span class="absolute inset-0 bg-blue-600
                                  translate-x-[-100%] group-hover:translate-x-0
                                  transition-transform duration-300 ease-out">
                     </span>

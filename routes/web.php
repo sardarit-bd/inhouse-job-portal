@@ -23,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/terms', [PageController::class, 'terms'])->name('terms');
+Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
+
 Route::post('/contact', [PageController::class, 'submitContact'])->name('contact.submit');
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
 Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
@@ -86,16 +89,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // Profile stats
             Route::get('/stats', [JobSeekerProfileController::class, 'getProfileStats'])->name('stats');
 
-            // Profile photo routes 
+            // Profile photo routes
             Route::post('/photo', [JobSeekerProfileController::class, 'updateProfilePhoto'])->name('photo.update');
             Route::delete('/photo', [JobSeekerProfileController::class, 'deleteProfilePhoto'])->name('photo.delete');
             Route::post('/complete-update', [JobSeekerProfileController::class, 'completeUpdate'])->name('complete-update');
 
-            // Job Seeker Profile Routes 
+            // Job Seeker Profile Routes
             Route::post('/resume', [JobSeekerProfileController::class, 'uploadResume'])->name('resume.upload');
             Route::delete('/resume', [JobSeekerProfileController::class, 'deleteResume'])->name('resume.delete');
         });
-        
+
         // Applications
         Route::get('/applications', [ApplicationController::class, 'myApplications'])->name('applications');
     });
@@ -146,7 +149,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/contact-messages/{id}', [PageController::class, 'deleteContactMessage'])->name('contact.delete');
 
         Route::patch('users/{user}/verify-email', [AdminUserController::class, 'verifyEmail'])->name('users.verify-email');
-    
+
         Route::post('users/{user}/resend-verification', [AdminUserController::class, 'resendVerification'])->name('users.resend-verification');
 
         Route::patch('/users/{user}/verify-email', [AdminUserController::class, 'verifyEmail'])->name('users.verify-email');
@@ -162,19 +165,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Route::get('/admin/applications/{application}/resume-preview', function($id) {
         //     $application = JobApplication::findOrFail($id);
-            
+
         //     // চেক করুন ইউজারের permission আছে কিনা
         //     if (!auth()->user()->is_admin) {
         //         abort(403);
         //     }
-            
+
         //     $path = storage_path('app/' . $application->resume);
-            
+
         //     // ফাইল চেক করুন
         //     if (!file_exists($path)) {
         //         abort(404, 'Resume file not found');
         //     }
-            
+
         //     return response()->file($path, [
         //         'Content-Type' => 'application/pdf',
         //         'Content-Disposition' => 'inline; filename="resume_' . $application->user->name . '.pdf"',
@@ -188,8 +191,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Admin Management
         Route::resource('admins', AdminController::class)->except(['show']);
         Route::patch('admins/{admin}/toggle-status', [AdminController::class, 'toggleStatus']);
-        
-        // System Logs 
+
+        // System Logs
         Route::get('logs', function () {
             return view('admin.logs.index');
         })->name('logs.index');

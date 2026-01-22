@@ -9,41 +9,76 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactFormMail;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class PageController extends Controller
 {
-    public function home()
-    {
-        $featuredJobs = Job::active()
-            ->orderBy('created_at', 'desc')
-            ->take(6)
-            ->get();
-            
-        $recentJobs = Job::active()
-            ->orderBy('created_at', 'desc')
-            ->take(8)
-            ->get();
+public function home()
+{
+    // Get current date
+    $today = Carbon::today()->toDateString();
+    
+    // ✅ Fix: Load required relationships and ensure slug is selected
+    $featuredJobs = Job::select('*') // Ensure all fields including slug
+        ->with(['company', 'category'])
+        ->where('is_active', 1)
+        ->where('status', 'approved')
+        ->where(function($query) use ($today) {
+            $query->whereNull('application_deadline')
+                  ->orWhere('application_deadline', '>=', $today);
+        })
+        ->orderBy('created_at', 'desc')
+        ->take(6)
+        ->get()
+        ->map(function ($job) {
+            // ✅ Ensure slug exists
+            if (empty($job->slug)) {
+                $job->slug = $job->generateSlug();
+                $job->save();
+            }
+            return $job;
+        });
         
-        // Get featured blogs
-        $featuredBlogs = \App\Models\Blog::published()
-            ->featured()
+    // ✅ Same fix for recentJobs
+    $recentJobs = Job::select('*')
+        ->with(['company', 'category'])
+        ->where('is_active', 1)
+        ->where('status', 'approved')
+        ->where(function($query) use ($today) {
+            $query->whereNull('application_deadline')
+                  ->orWhere('application_deadline', '>=', $today);
+        })
+        ->orderBy('created_at', 'desc')
+        ->take(8)
+        ->get()
+        ->map(function ($job) {
+            if (empty($job->slug)) {
+                $job->slug = $job->generateSlug();
+                $job->save();
+            }
+            return $job;
+        });
+    
+    // Get featured blogs
+    $featuredBlogs = \App\Models\Blog::published()
+        ->featured()
+        ->orderBy('published_at', 'desc')
+        ->take(3)
+        ->get();
+    
+    // Get recent blogs if less than 3 featured
+    if ($featuredBlogs->count() < 3) {
+        $additionalBlogs = \App\Models\Blog::published()
+            ->whereNotIn('id', $featuredBlogs->pluck('id'))
             ->orderBy('published_at', 'desc')
-            ->take(3)
+            ->take(3 - $featuredBlogs->count())
             ->get();
         
-        // Get recent blogs if less than 3 featured
-        if ($featuredBlogs->count() < 3) {
-            $additionalBlogs = \App\Models\Blog::published()
-                ->whereNotIn('id', $featuredBlogs->pluck('id'))
-                ->orderBy('published_at', 'desc')
-                ->take(3 - $featuredBlogs->count())
-                ->get();
-            
-            $featuredBlogs = $featuredBlogs->merge($additionalBlogs);
-        }
-        
-        return view('home', compact('featuredJobs', 'recentJobs', 'featuredBlogs'));
+        $featuredBlogs = $featuredBlogs->merge($additionalBlogs);
     }
+    
+    return view('home', compact('featuredJobs', 'recentJobs', 'featuredBlogs'));
+}
 
     public function about()
     {

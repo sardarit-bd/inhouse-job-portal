@@ -78,7 +78,7 @@
                         </button>
                     @endif
                 @elseif(auth()->user()->isAdmin())
-                    <a href="{{ route('admin.jobs.edit', $job) }}" 
+                    <a href="{{ route('admin.jobs.edit', $job->slug) }}" 
                        class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition font-medium">
                         Edit Job
                     </a>

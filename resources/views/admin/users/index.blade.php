@@ -98,9 +98,6 @@
                     <h3 class="text-lg leading-6 font-medium text-gray-900">
                         All Users ({{ $users->total() }})
                     </h3>
-                    <!-- <p class="mt-1 text-sm text-gray-500">
-                        Total {{ $users->total() }} users found
-                    </p> -->
                 </div>
                 <div class="flex items-center space-x-3">
                     <!-- Search -->
@@ -136,14 +133,13 @@
                         <option value="inactive">Inactive</option>
                     </select>
 
-                    
-                    <!-- Add User Button -->
+                    <!-- Create User Button -->
                     <!-- <button @click="showCreateModal = true"
-                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200">
+                        <svg class="w-5 h-5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                         </svg>
-                        Add User
+                        Create User
                     </button> -->
                 </div>
             </div>
@@ -196,16 +192,14 @@
                                                  :src="`/storage/${user.profile_photo}`" 
                                                  :alt="user.name">
                                         </template>
-                                        <template x-if="!user.profile_photo">
-                                            <div class="h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
-                                                <span class="text-white font-semibold text-sm" x-text="user.name.charAt(0)"></span>
-                                            </div>
-                                        </template>
+                                        <div x-show="!user.profile_photo" class="h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+                                            <span class="text-white font-semibold text-sm" x-text="user.name?.charAt(0) || 'U'"></span>
+                                        </div>
                                     </div>
                                     <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900" x-text="user.name"></div>
-                                        <div class="text-sm text-gray-500" x-text="user.email"></div>
-                                        <div x-show="user.phone" class="text-sm text-gray-500" x-text="user.phone"></div>
+                                        <div class="text-sm font-medium text-gray-900" x-text="user.name || 'N/A'"></div>
+                                        <div class="text-sm text-gray-500" x-text="user.email || 'N/A'"></div>
+                                        <div x-show="user.phone" class="text-sm text-gray-500" x-text="user.phone || ''"></div>
                                     </div>
                                 </div>
                             </td>
@@ -238,58 +232,50 @@
                                 </span>
                             </td>
                             <!-- Email Verification Status -->
-<td class="px-6 py-4 whitespace-nowrap">
-    <div class="flex items-center">
-        <span :class="{
-            'bg-green-100 text-green-800': user.email_verified_at,
-            'bg-yellow-100 text-yellow-800': !user.email_verified_at
-        }" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
-            <svg class="mr-1.5 h-4 w-4" :class="{
-                'text-green-400': user.email_verified_at,
-                'text-yellow-400': !user.email_verified_at
-            }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path x-show="user.email_verified_at" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                <path x-show="!user.email_verified_at" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-            </svg>
-            <span x-text="user.email_verified_at ? 'Verified' : 'Unverified'"></span>
-        </span>
-        
-        <!-- Verify Button (Show only for unverified users) -->
-        <button x-show="!user.email_verified_at" 
-                @click="verifyUserEmail(user)"
-                class="ml-2 text-green-600 hover:text-green-800 transition-colors duration-200"
-                title="Verify Email">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-        </button>
-    </div>
-</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span :class="{
+                                        'bg-green-100 text-green-800': user.email_verified_at,
+                                        'bg-yellow-100 text-yellow-800': !user.email_verified_at
+                                    }" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
+                                        <!-- <svg class="mr-1.5 h-4 w-4" :class="{
+                                            'text-green-400': user.email_verified_at,
+                                            'text-yellow-400': !user.email_verified_at
+                                        }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path x-show="user.email_verified_at" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                            <path d="M12 15v2m-6 4h12a2 2 0 0 0 2 -2v-6a2 2 0 0 0 -2 -2H6a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2zm10 -10V7a4 4 0 0 0 -8 0v4h8z"/>
+                                        </svg> -->
+                                        <span x-text="user.email_verified_at ? 'Verified' : 'Unverified'"></span>
+                                    </span>
+                                    
+                                    <!-- Verify Button (Show only for unverified users) -->
+                                    <button x-show="!user.email_verified_at" 
+                                            @click="verifyUserEmail(user)"
+                                            class="ml-2 text-green-600 hover:text-green-800 transition-colors duration-200"
+                                            title="Verify Email">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Unverify Button (Show only for verified users) -->
+                                    <button x-show="user.email_verified_at" 
+                                            @click="unverifyUserEmail(user)"
+                                            class="ml-2 text-red-600 hover:text-red-800 transition-colors duration-200"
+                                            title="Unverify Email">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <span x-text="formatDate(user.created_at)"></span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center space-x-3">
-                                    <!-- View Button -->
-                                    <!-- <a :href="`/admin/users/${user.id}`" 
-                                       class="text-indigo-600 hover:text-indigo-900 transition-colors duration-200"
-                                       title="View Details">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                        </svg>
-                                    </a> -->
-                                    
-                                    <!-- Edit Button -->
-                                    <!-- <a :href="`/admin/users/${user.id}/edit`" 
-                                       class="text-blue-600 hover:text-blue-900 transition-colors duration-200"
-                                       title="Edit User">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                        </svg>
-                                    </a> -->
-                                    
                                     <!-- Toggle Status Button -->
                                     <button @click="toggleUserStatus(user)"
                                             :class="{
@@ -321,23 +307,23 @@
                     <!-- Empty State -->
                     <tr x-show="users.length === 0 && !loading">
                         <td colspan="6" class="px-6 py-12 text-center">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13 0h-6m0 0V8a3 3 0 00-6 0v4m6 0a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
-                            <h3 class="mt-2 text-sm font-medium text-gray-900">No users found</h3>
-                            <p class="mt-1 text-sm text-gray-500">Try adjusting your search or filter</p>
+
+                            <h3 class="mt-2 text-sm font-medium text-gray-900">
+                                No users found
+                            </h3>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-
+        
         <!-- Pagination -->
-        @if($users->hasPages())
-            <div class="px-6 py-4 border-t border-gray-200">
-                {{ $users->withQueryString()->links() }}
-            </div>
-        @endif
+        <div class="px-6 py-4 border-t border-gray-200">
+            {{ $users->links() }}
+        </div>
     </div>
 </div>
 
@@ -460,7 +446,6 @@
 
 @push('scripts')
 <script>
-    
 function userManagement() {
     return {
         loading: false,
@@ -490,14 +475,20 @@ function userManagement() {
         
         init() {
             console.log('User Management Initialized');
-            // Format users data to ensure email_verified_at is safe
+            // Format users data to ensure all properties exist
             this.users = this.users.map(user => ({
                 ...user,
                 email_verified_at: user.email_verified_at || null,
                 phone: user.phone || '',
-                profile_photo: user.profile_photo || ''
+                profile_photo: user.profile_photo || '',
+                name: user.name || 'N/A',
+                email: user.email || 'N/A',
+                role: user.role || 'job_seeker',
+                is_active: typeof user.is_active !== 'undefined' ? user.is_active : true,
+                created_at: user.created_at || null
             }));
 
+            // Filter out admin users
             this.users = this.users.filter(user => user.role !== 'admin');
         },
         
@@ -521,13 +512,17 @@ function userManagement() {
         },
         
         formatDate(dateString) {
-            if (!dateString) return '';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
+            if (!dateString) return 'N/A';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+            } catch (error) {
+                return 'Invalid Date';
+            }
         },
         
         async searchUsers() {
@@ -561,15 +556,24 @@ function userManagement() {
                     }
                 });
                 
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
                 const data = await response.json();
                 
                 if (data.users) {
-                    // Format users data to handle null values
+                    // Format users data to handle null values and ensure all properties exist
                     this.users = data.users.data.map(user => ({
                         ...user,
                         email_verified_at: user.email_verified_at || null,
                         phone: user.phone || '',
-                        profile_photo: user.profile_photo || ''
+                        profile_photo: user.profile_photo || '',
+                        name: user.name || 'N/A',
+                        email: user.email || 'N/A',
+                        role: user.role || 'job_seeker',
+                        is_active: typeof user.is_active !== 'undefined' ? user.is_active : true,
+                        created_at: user.created_at || null
                     }));
 
                     // Filter out admin users
@@ -577,8 +581,8 @@ function userManagement() {
                     this.currentPage = data.users.current_page;
                     this.lastPage = data.users.last_page;
                     this.total = data.users.total;
-                    this.from = data.users.from;
-                    this.to = data.users.to;
+                    this.from = data.users.from || 0;
+                    this.to = data.users.to || 0;
                 }
             } catch (error) {
                 console.error('Error fetching users:', error);
@@ -620,9 +624,12 @@ function userManagement() {
                         method: 'PATCH',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
                         }
                     });
+                    
+                    const data = await response.json();
                     
                     if (response.ok) {
                         user.is_active = !user.is_active;
@@ -632,7 +639,7 @@ function userManagement() {
                             'success'
                         );
                     } else {
-                        throw new Error('Failed to update user status');
+                        throw new Error(data.message || 'Failed to update user status');
                     }
                 } catch (error) {
                     this.showAlert('Error', 'Failed to update user status', 'error');
@@ -654,20 +661,54 @@ function userManagement() {
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'X-Requested-With': 'XMLHttpRequest'
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
                         }
                     });
                     
                     const data = await response.json();
                     
                     if (response.ok) {
-                        user.email_verified_at = data.email_verified_at;
+                        user.email_verified_at = data.email_verified_at || new Date().toISOString();
                         this.showAlert('Success', 'Email verified successfully', 'success');
                     } else {
                         throw new Error(data.message || 'Failed to verify email');
                     }
                 } catch (error) {
                     this.showAlert('Error', error.message || 'Failed to verify email', 'error');
+                }
+            }
+        },
+
+        async unverifyUserEmail(user) {
+            if (await this.confirmAction(
+                'Unverify Email?',
+                `Are you sure you want to unverify ${user.email}? This will mark the email as unverified and the user will need to verify their email again.`,
+                'warning',
+                'Yes, unverify it!',
+                '#dc3545'
+            )) {
+                try {
+                    const response = await fetch(`/admin/users/${user.id}/unverify-email`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        user.email_verified_at = null;
+                        this.showAlert('Success', 'Email unverified successfully', 'success');
+                    } else {
+                        throw new Error(data.message || 'Failed to unverify email');
+                    }
+                } catch (error) {
+                    this.showAlert('Error', error.message || 'Failed to unverify email', 'error');
                 }
             }
         },
@@ -724,7 +765,8 @@ function userManagement() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify(this.createForm)
                 });

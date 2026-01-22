@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="py-6">
-    <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+<div class="">
+    <div class="max-w-full mx-auto">
         <!-- Header -->
         <!-- <div class="md:flex md:items-center md:justify-between mb-6">
             <div class="flex-1 min-w-0">

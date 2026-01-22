@@ -11,7 +11,17 @@ class JobController extends Controller
     public function index(Request $request)
     {
         $categories = Category::where('is_active', true)->orderBy('order')->get();
+        
+        // ✅ Ensure jobs have slug before querying
+        $this->ensureAllJobsHaveSlug();
+        
         $query = Job::active();
+
+        $query->where(function ($q) {
+            $q->whereNull('application_deadline')
+            ->orWhereDate('application_deadline', '>=', now()->toDateString());
+        });
+
         
         // Search filters
         if ($request->filled('search')) {
@@ -20,7 +30,6 @@ class JobController extends Controller
                 $q->where('title', 'like', '%' . $search . '%')
                   ->orWhere('description', 'like', '%' . $search . '%')
                   ->orWhere('company_name', 'like', '%' . $search . '%');
-                //   ->orWhere('requirements', 'like', '%' . $search . '%');
             });
         }
         
@@ -79,8 +88,15 @@ class JobController extends Controller
         return view('jobs.index', compact('jobs', 'categories'));
     }
 
-    public function show(Job $job, Request $request)
+    public function show($identifier, Request $request)
     {
+        // Find job by slug or ID
+        $job = Job::findBySlugOrId($identifier);
+        
+        if (!$job) {
+            abort(404);
+        }
+
         // Track view by IP address
         $job->incrementView($request->ip());
         
@@ -95,5 +111,26 @@ class JobController extends Controller
         }
         
         return view('jobs.show', compact('job', 'hasApplied'));
+    }
+    
+    /**
+     * Ensure all active jobs have a slug
+     */
+    private function ensureAllJobsHaveSlug()
+    {
+        $jobsWithoutSlug = Job::whereNull('slug')->orWhere('slug', '')->get();
+        
+        foreach ($jobsWithoutSlug as $job) {
+            $slug = \Illuminate\Support\Str::slug($job->title);
+            $originalSlug = $slug;
+            $count = 1;
+            
+            while (Job::where('slug', $slug)->where('id', '!=', $job->id)->exists()) {
+                $slug = $originalSlug . '-' . $count++;
+            }
+            
+            $job->slug = $slug;
+            $job->saveQuietly();
+        }
     }
 }

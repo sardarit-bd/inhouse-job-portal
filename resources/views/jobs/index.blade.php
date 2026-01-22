@@ -170,14 +170,6 @@
 
             <!-- Right Side - Cards with smaller width -->
             <div class="flex-1 min-w-0">
-                <!-- Header -->
-                <!-- <div class="mb-6">
-                    <h1 class="text-xl font-bold text-right mr-2 text-gray-900">Jobs Found: {{ $jobs->total() }} </h1>
-                    @if($jobs->total() > 0)
-                        <p class="text-gray-600 text-sm mt-1">Browse opportunities that match your skills</p>
-                    @endif
-                </div> -->
-
                 @if ($jobs && $jobs->count() > 0)
                     <!-- Smaller Cards with 3 columns -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -255,7 +247,8 @@
                                                 {{ $job->job_type }}
                                             </span>
                                         </div>
-                                        <a href="{{ route('jobs.show', $job) }}" 
+                                        <!-- ✅ FIXED: Use $job->slug with fallback to $job->id -->
+                                        <a href="{{ route('jobs.show', $job->slug ?? $job->id) }}" 
                                            class="text-xs font-medium text-indigo-600 hover:text-indigo-800 whitespace-nowrap">
                                             Details →
                                         </a>
@@ -277,7 +270,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         <h3 class="text-base font-semibold text-gray-900 mb-1">No jobs found</h3>
-                        <!-- <p class="text-gray-600 text-sm mb-3">Try changing your filters</p> -->
                         <a href="{{ route('jobs.index') }}" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">
                             Clear all filters
                         </a>

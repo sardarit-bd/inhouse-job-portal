@@ -13,7 +13,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    @php
+        use App\Models\SiteSetting;
+        $faviconUrl = SiteSetting::getFaviconUrl();
+        
+        // Debug for checking
+        // dd($faviconUrl, SiteSetting::getValue('favicon'));
+    @endphp
+    
+    @if($faviconUrl)
+        <link rel="icon" type="image/x-icon" href="{{ $faviconUrl }}">
+        <link rel="shortcut icon" href="{{ $faviconUrl }}" type="image/x-icon">
+        <link rel="icon" href="{{ $faviconUrl }}" type="image/x-icon">
+    @else
+        {{-- Default favicon --}}
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    @endif
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

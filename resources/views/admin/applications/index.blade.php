@@ -7,49 +7,47 @@
 @section('content')
 <div class="space-y-6">
     <!-- Filters -->
-    <div class="bg-white shadow rounded-lg">
+    <!-- <div class="bg-white shadow rounded-lg">
         <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
             <h3 class="text-lg leading-6 font-medium text-gray-900">
                 Filter Applications
             </h3>
         </div>
         <div class="px-4 py-5 sm:p-6">
-            <form method="GET" action="{{ route('admin.applications.index') }}" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                        <select name="status" id="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            <option value="">All Status</option>
-                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="reviewed" {{ request('status') == 'reviewed' ? 'selected' : '' }}>Reviewed</option>
-                            <option value="shortlisted" {{ request('status') == 'shortlisted' ? 'selected' : '' }}>Shortlisted</option>
-                            <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                            <option value="hired" {{ request('status') == 'hired' ? 'selected' : '' }}>Hired</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label for="job" class="block text-sm font-medium text-gray-700">Job</label>
-                        <select name="job_id" id="job" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            <option value="">All Jobs</option>
-                            @foreach($jobs as $job)
-                            <option value="{{ $job->id }}" {{ request('job_id') == $job->id ? 'selected' : '' }}>
-                                {{ $job->title }} - {{ $job->company_name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label for="date" class="block text-sm font-medium text-gray-700">Date Range</label>
-                        <input type="date" name="date" id="date" value="{{ request('date') }}" 
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    </div>
+            <form method="GET" action="{{ route('admin.applications.index') }}" class="flex flex-wrap items-end gap-4">             
+                <div class="flex-1 min-w-[150px]">
+                    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                    <select name="status" id="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <option value="">All Status</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="reviewed" {{ request('status') == 'reviewed' ? 'selected' : '' }}>Reviewed</option>
+                        <option value="shortlisted" {{ request('status') == 'shortlisted' ? 'selected' : '' }}>Shortlisted</option>
+                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                        <option value="hired" {{ request('status') == 'hired' ? 'selected' : '' }}>Hired</option>
+                    </select>
                 </div>
-                
-                <div class="flex justify-end space-x-3">
+            
+                <div class="flex-1 min-w-[150px]">
+                    <label for="job" class="block text-sm font-medium text-gray-700">Job</label>
+                    <select name="job_id" id="job" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <option value="">All Jobs</option>
+                        @foreach($jobs as $job)
+                        <option value="{{ $job->id }}" {{ request('job_id') == $job->id ? 'selected' : '' }}>
+                            {{ $job->title }} - {{ $job->company_name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="flex-1 min-w-[150px]">
+                    <label for="date" class="block text-sm font-medium text-gray-700">Date Range</label>
+                    <input type="date" name="date" id="date" value="{{ request('date') }}" 
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+
+                <div class="flex gap-3">
                     <a href="{{ route('admin.applications.index') }}" 
-                       class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Reset
                     </a>
                     <button type="submit" 
@@ -59,7 +57,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> -->
 
     <!-- Applications List -->
     <div class="bg-white shadow rounded-lg overflow-hidden">
@@ -73,8 +71,53 @@
                         Total {{ $applications->total() }} applications found
                     </p> -->
                 </div>
-                <div class="text-sm text-gray-500">
-                    Showing {{ $applications->firstItem() }} to {{ $applications->lastItem() }} of {{ $applications->total() }}
+                <div class="">
+                    <form method="GET" action="{{ route('admin.applications.index') }}" class="flex flex-wrap items-end gap-4">
+                        <!-- Status -->
+                        <div class="flex-1 min-w-[150px]">
+                            <!-- <label for="status" class="block text-sm font-medium text-gray-700">Status</label> -->
+                            <select name="status" id="status" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                <option value="">Status</option>
+                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="reviewed" {{ request('status') == 'reviewed' ? 'selected' : '' }}>Reviewed</option>
+                                <option value="shortlisted" {{ request('status') == 'shortlisted' ? 'selected' : '' }}>Shortlisted</option>
+                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                <option value="hired" {{ request('status') == 'hired' ? 'selected' : '' }}>Hired</option>
+                            </select>
+                        </div>
+
+                        <!-- Job -->
+                        <div class="flex-1 min-w-[150px]">
+                            <!-- <label for="job" class="block text-sm font-medium text-gray-700">Job</label> -->
+                            <select name="job_id" id="job" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                <option value="">Jobs</option>
+                                @foreach($jobs as $job)
+                                <option value="{{ $job->id }}" {{ request('job_id') == $job->id ? 'selected' : '' }}>
+                                    {{ $job->title }} - {{ $job->company_name }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="flex-1 min-w-[150px]">
+                            <!-- <label for="date" class="block text-sm font-medium text-gray-700">Date Range</label> -->
+                            <input type="date" name="date" id="date" value="{{ request('date') }}" 
+                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="flex gap-3">
+                            <a href="{{ route('admin.applications.index') }}" 
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Reset
+                            </a>
+                            <button type="submit" 
+                                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Apply Filters
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

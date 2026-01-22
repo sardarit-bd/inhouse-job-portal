@@ -6,6 +6,26 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <title>@yield('title', config('app.name', 'Laravel'))</title>
+
+    <!-- Favicon -->
+    @php
+        use App\Models\SiteSetting;
+        $faviconUrl = SiteSetting::getFaviconUrl();
+        
+        // Debug for checking
+        // dd($faviconUrl, SiteSetting::getValue('favicon'));
+    @endphp
+    
+    @if($faviconUrl)
+        <link rel="icon" type="image/x-icon" href="{{ $faviconUrl }}">
+        <link rel="shortcut icon" href="{{ $faviconUrl }}" type="image/x-icon">
+        <link rel="icon" href="{{ $faviconUrl }}" type="image/x-icon">
+    @else
+        {{-- Default favicon --}}
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    @endif
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

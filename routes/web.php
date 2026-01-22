@@ -16,6 +16,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\NotificationController;
 use App\Models\JobApplication;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Notifications routes
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::get('/unread', [NotificationController::class, 'getUnread'])->name('unread');
+        Route::get('/unread-count', [NotificationController::class, 'unreadCount'])->name('unreadCount');
+        Route::get('/{notification}', [NotificationController::class, 'show'])->name('show');
+        Route::post('/{notification}/read', [NotificationController::class, 'markAsRead'])->name('markAsRead');
+        Route::post('/read-all', [NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
+        Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
+    });
 
     // ----- Job Seeker routes -----
     Route::middleware(['role:job_seeker'])->prefix('job-seeker')->name('job-seeker.')->group(function () {
@@ -121,6 +133,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Users
         Route::resource('users', AdminUserController::class);
         Route::patch('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
+        Route::patch('/users/{user}/verify-email', [AdminUserController::class, 'verifyEmail'])->name('users.verify-email');
+        Route::patch('/users/{user}/unverify-email', [AdminUserController::class, 'unverifyEmail'])->name('users.unverify-email');
+        Route::post('/users/{user}/resend-verification', [AdminUserController::class, 'resendVerification'])->name('users.resend-verification');
 
         // Categories
         Route::resource('categories', CategoryController::class);
@@ -134,11 +149,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/blogs/{blog}/toggle-status', [AdminBlogController::class, 'toggleStatus'])->name('blogs.toggle-status');
         Route::patch('/blogs/{blog}/toggle-featured', [AdminBlogController::class, 'toggleFeatured'])->name('blogs.toggle-featured');
 
-        // Settings
+       // Settings
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
         Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
         Route::delete('/settings/logo', [SettingController::class, 'deleteLogo'])->name('settings.deleteLogo');
+        Route::delete('/settings/favicon', [SettingController::class, 'deleteFavicon'])->name('settings.deleteFavicon');
 
+        // Contact message     
         Route::get('/contact-messages', [PageController::class, 'contactMessages'])->name('contact.messages');
         Route::get('/contact-messages/{id}', [PageController::class, 'showContactMessage'])->name('contact.show');
         Route::post('/contact-messages/{id}/reply', [PageController::class, 'replyContactMessage'])->name('contact.reply');
@@ -149,8 +166,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
         Route::post('users/{user}/resend-verification', [AdminUserController::class, 'resendVerification'])->name('users.resend-verification');
 
-        Route::patch('/users/{user}/verify-email', [AdminUserController::class, 'verifyEmail'])->name('users.verify-email');
-
+        
         Route::post('/applications/{application}/send-custom-email', [AdminApplicationController::class, 'sendCustomEmail'])->name('applications.send-custom-email');
 
         // Queue routes
@@ -159,6 +175,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::post('/applications/{application}/test-email', [AdminApplicationController::class, 'testEmail'])
             ->name('admin.applications.test-email');
+
+            
 
         // Route::get('/admin/applications/{application}/resume-preview', function($id) {
         //     $application = JobApplication::findOrFail($id);

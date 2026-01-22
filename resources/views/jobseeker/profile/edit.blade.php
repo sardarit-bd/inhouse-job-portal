@@ -4,59 +4,6 @@
 
 @section('content')
 <div class="container mx-auto py-8 max-w-7xl">
-    <!-- Breadcrumb -->
-    <!-- <nav class="mb-8">
-        <ol class="flex items-center space-x-2 text-sm text-gray-600">
-            <li><a href="{{ route('job-seeker.dashboard') }}" class="hover:text-blue-600 transition-colors">Dashboard</a></li>
-            <li><span class="mx-2">›</span></li>
-            <li class="text-gray-800 font-medium">Edit Profile</li>
-        </ol>
-    </nav> -->
-
-    <!-- Success/Error Messages -->
-    <!-- @if(session('success'))
-        <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-r">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <i class="fas fa-check-circle text-green-500"></i>
-                </div>
-                <div class="ml-3">
-                    <p class="text-green-700">{{ session('success') }}</p>
-                </div>
-            </div>
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <i class="fas fa-exclamation-circle text-red-500"></i>
-                </div>
-                <div class="ml-3">
-                    <p class="text-red-700">{{ session('error') }}</p>
-                </div>
-            </div>
-        </div>
-    @endif
-
-    @if($errors->any())
-        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <i class="fas fa-exclamation-triangle text-red-500"></i>
-                </div>
-                <div class="ml-3">
-                    <ul class="text-red-600 list-disc list-inside text-sm">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
-    @endif -->
-
     <!-- Main Layout -->
     <div class="flex flex-col lg:flex-row gap-8">
         <!-- Left Sidebar -->
@@ -88,9 +35,6 @@
                             <i class="fas fa-spinner fa-spin text-white text-2xl"></i>
                         </div>
                     </div>
-                    
-                    <!-- <h3 class="mt-3 font-medium text-gray-900">{{ $user->name }}</h3>
-                    <p class="text-sm text-gray-500">{{ $jobSeekerProfile->title ?? 'Job Seeker' }}</p> -->
                 </div>
                 
                 <!-- Photo Upload Section -->
@@ -101,7 +45,6 @@
                     </form>
                     
                     <!-- Upload -->
-
                     <button onclick="document.getElementById('profile_photo').click()" 
                             class="flex items-center mr-4 gap-1 text-blue-600 hover:text-blue-800 transition">
                         <i class="fas fa-camera"></i>
@@ -116,12 +59,10 @@
                         <span class="text-sm">Remove</span>
                     </button>
                     @endif
-                    
-                    
                 </div>
                 <div class="text-xs text-gray-400 text-center pt-2 border-t border-gray-100">
-                        <p>JPG, PNG or GIF • Max 2MB</p>
-                    </div>
+                    <p>JPG, PNG or GIF • Max 2MB</p>
+                </div>
             </div>
             
             <!-- Navigation -->
@@ -228,14 +169,12 @@
                 } else {
                     $barColor = 'bg-green-500';
                 }
-
             @endphp
             
             <div class="mt-6 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
                 <h4 class="text-sm font-medium text-gray-900 mb-2">Profile Completion</h4>
                 <div class="w-full bg-gray-200 rounded-full h-2">
                     <div class="{{ $barColor }} h-2 rounded-full" style="width: {{ $completionPercentage }}%"></div>
-
                 </div>
                 <p class="text-xs text-gray-500 mt-2">{{ round($completionPercentage) }}% Complete • {{ $completedFields }}/{{ $totalFields }} fields</p>
             </div>
@@ -248,7 +187,6 @@
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="border-b border-gray-200 px-6 py-4">
                         <h2 class="text-lg font-semibold text-gray-900">Profile Information</h2>
-                        <!-- <p class="text-sm text-gray-600 mt-1">Update your personal and professional information</p> -->
                     </div>
                     
                     <div class="p-6">
@@ -430,7 +368,6 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Education</h2>
-                                <!-- <p class="text-sm text-gray-600 mt-1">Add your educational background</p> -->
                             </div>
                             <button onclick="toggleEducationForm()" 
                                     class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -528,7 +465,6 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Skills</h2>
-                                <!-- <p class="text-sm text-gray-600 mt-1">Add your professional skills</p> -->
                             </div>
                             <button onclick="toggleSkillForm()" 
                                     class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -609,7 +545,6 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Work Experience</h2>
-                                <!-- <p class="text-sm text-gray-600 mt-1">Add your professional work experience</p> -->
                             </div>
                             <button onclick="toggleExperienceForm()" 
                                     class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -743,7 +678,6 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Projects</h2>
-                                <!-- <p class="text-sm text-gray-600 mt-1">Showcase your projects and work</p> -->
                             </div>
                             <button onclick="toggleProjectForm()" 
                                     class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -853,9 +787,8 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Certifications</h2>
-                                <!-- <p class="text-sm text-gray-600 mt-1">Add your professional certifications</p> -->
                             </div>
-                            <button onclick="toggleCertificationForm()" 
+                            <button onclick="resetCertificationForm()" 
                                     class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                 <i class="fas fa-plus mr-1.5"></i> Add Certification
                             </button>
@@ -866,9 +799,9 @@
                         <!-- Add/Edit Certification Form -->
                         <div id="certificationForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
                             <h3 class="text-sm font-medium text-gray-900 mb-4" id="certificationFormTitle">Add New Certification</h3>
-                            <form id="certificationFormElement" method="POST" action="{{ route('job-seeker.professional-profile.certification.store') }}">
+                            <form id="certificationFormElement" method="POST" action="{{ route('job-seeker.professional-profile.certification.store') }}" enctype="multipart/form-data">
                                 @csrf
-                                <input type="hidden" id="certification_id" name="certification_id">
+                                <input type="hidden" id="certification_id" name="certification_id" value="">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Certification Name<span class="text-lg text-red-600">*</span></label>
@@ -893,6 +826,55 @@
                                     <div class="md:col-span-2">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Credential URL (Optional)</label>
                                         <input type="url" name="credential_url" id="certification_credential_url" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com/credential">
+                                    </div>
+                                </div>
+
+                                <div class="md:col-span-2 mt-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Attachments (Optional)</label>
+                                    <!-- <p class="text-xs text-gray-500 mb-3">Upload supporting documents for this certification (Max 5 files, 5MB each)</p> -->
+                                    
+                                    <!-- Existing Attachments (for edit mode) -->
+                                    <div id="existing-attachments-container" class="mb-4">
+                                        <!-- Existing attachments will be dynamically added here -->
+                                    </div>
+                                    
+                                    <!-- File Upload Area -->
+                                    <div class="mt-2">
+                                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors cursor-pointer" 
+                                             onclick="document.getElementById('certification_attachments').click()"
+                                             id="file-drop-area">
+                                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                            <p class="mt-2 text-sm text-gray-600">
+                                                <span class="font-medium text-blue-600 hover:text-blue-500">Click to upload</span>
+                                                or drag and drop
+                                            </p>
+                                            <p class="text-xs text-gray-500 mt-1">
+                                                PDF, JPG, PNG, DOC, DOCX up to 5MB each
+                                            </p>
+                                            <input type="file" name="attachments[]" id="certification_attachments" 
+                                                class="hidden" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                                                onchange="handleFileSelection(this)">
+                                        </div>
+                                        
+                                        <!-- File counter -->
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <p class="text-xs text-gray-500" id="file-counter">
+                                                <span id="current-file-count">0</span> / 5 files selected
+                                            </p>
+                                            <button type="button" onclick="clearAllFiles()" class="text-xs text-red-600 hover:text-red-800 font-medium hidden" id="clear-all-btn">
+                                                Clear All
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Selected Files Preview -->
+                                    <div id="selected-files-container" class="mt-4 hidden">
+                                        <h4 class="text-sm font-medium text-gray-700 mb-2">Selected Files:</h4>
+                                        <div id="files-list" class="space-y-2 max-h-64 overflow-y-auto p-2 border border-gray-200 rounded-lg bg-white">
+                                            <!-- Files will be dynamically added here -->
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="mt-6 flex justify-end space-x-3">
@@ -932,9 +914,73 @@
                                             <i class="fas fa-external-link-alt mr-1.5"></i> View Credential
                                         </a>
                                         @endif
+                                        
+                                        <!-- Show existing attachments if any -->
+                                        @php
+                                            // Check if attachments exist and get count safely
+                                            $attachmentsCount = 0;
+                                            if (isset($certification->attachments)) {
+                                                if (is_array($certification->attachments)) {
+                                                    $attachmentsCount = count($certification->attachments);
+                                                } elseif (method_exists($certification->attachments, 'count')) {
+                                                    $attachmentsCount = $certification->attachments->count();
+                                                }
+                                            }
+                                        @endphp
+                                        
+                                        @if($attachmentsCount > 0)
+                                        <div class="mt-4">
+                                            <p class="text-sm font-medium text-gray-700 mb-2">Attachments:</p>
+                                            <div class="flex flex-wrap gap-2">
+                                                @foreach($certification->attachments as $attachment)
+                                                    @php
+                                                        // Handle both array and object formats
+                                                        if (is_array($attachment)) {
+                                                            $fileName = $attachment['file_name'] ?? $attachment['name'] ?? 'File';
+                                                            $filePath = $attachment['file_path'] ?? $attachment['path'] ?? '';
+                                                        } else {
+                                                            $fileName = $attachment->file_name ?? $attachment->name ?? 'File';
+                                                            $filePath = $attachment->file_path ?? $attachment->path ?? '';
+                                                        }
+                                                    @endphp
+                                                    <div class="flex items-center bg-gray-100 px-3 py-1.5 rounded-md">
+                                                        <i class="fas fa-file text-gray-500 mr-2"></i>
+                                                        <span class="text-sm text-gray-700 truncate max-w-xs">{{ $fileName }}</span>
+                                                        @if(!empty($filePath))
+                                                        <a href="{{ asset('storage/' . $filePath) }}" 
+                                                        target="_blank" 
+                                                        class="ml-2 text-blue-600 hover:text-blue-800"
+                                                        title="View">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                        @endif
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        @endif
                                     </div>
                                     <div class="flex space-x-2">
-                                        <button onclick="editCertification({{ $certification->id }}, '{{ addslashes($certification->name) }}', '{{ addslashes($certification->issuing_organization) }}', '{{ $certification->issue_date->format('Y-m-d') }}', '{{ $certification->expiration_date ? $certification->expiration_date->format('Y-m-d') : '' }}', '{{ $certification->credential_id }}', '{{ $certification->credential_url }}')" 
+                                        @php
+                                            // Prepare attachments data for JavaScript
+                                            $attachmentsData = [];
+                                            if (isset($certification->attachments) && $attachmentsCount > 0) {
+                                                foreach ($certification->attachments as $attachment) {
+                                                    if (is_array($attachment)) {
+                                                        $attachmentsData[] = [
+                                                            'path' => $attachment['file_path'] ?? $attachment['path'] ?? '',
+                                                            'name' => $attachment['file_name'] ?? $attachment['name'] ?? 'File'
+                                                        ];
+                                                    } else {
+                                                        $attachmentsData[] = [
+                                                            'path' => $attachment->file_path ?? $attachment->path ?? '',
+                                                            'name' => $attachment->file_name ?? $attachment->name ?? 'File'
+                                                        ];
+                                                    }
+                                                }
+                                            }
+                                        @endphp
+                                        <button onclick="editCertification({{ $certification->id }}, '{{ addslashes($certification->name) }}', '{{ addslashes($certification->issuing_organization) }}', '{{ $certification->issue_date->format('Y-m-d') }}', '{{ $certification->expiration_date ? $certification->expiration_date->format('Y-m-d') : '' }}', '{{ $certification->credential_id }}', '{{ $certification->credential_url }}', {{ json_encode($attachmentsData) }})" 
                                                 class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                             Edit
                                         </button>
@@ -951,7 +997,7 @@
                             <div class="text-center py-8 border-2 border-gray-300 border-dashed rounded-lg">
                                 <i class="fas fa-certificate text-gray-400 text-3xl mb-3"></i>
                                 <p class="text-gray-500">No certifications added yet</p>
-                                <p class="text-gray-400 text-sm mt-1">Click "Add Certification" to get started</p>
+                                <!-- <p class="text-gray-400 text-sm mt-1">Click "Add Certification" to get started</p> -->
                             </div>
                             @endforelse
                         </div>
@@ -966,7 +1012,6 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Social Links</h2>
-                                <!-- <p class="text-sm text-gray-600 mt-1">Add your social media profiles</p> -->
                             </div>
                             <button onclick="toggleSocialLinkForm()" 
                                     class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -1086,7 +1131,6 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Visibility Settings</h2>
-                                <!-- <p class="text-sm text-gray-600 mt-1">Control your profile visibility and privacy</p> -->
                             </div>
                         </div>
                     </div>
@@ -1170,7 +1214,6 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Resume</h2>
-                                <!-- <p class="text-sm text-gray-600 mt-1">Upload and manage your resume</p> -->
                             </div>
                         </div>
                     </div>
@@ -1231,9 +1274,6 @@
                                 
                                 <div class="space-y-4">
                                     <div>
-                                        <!-- <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Resume File *
-                                        </label> -->
                                         <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-blue-400 transition-colors">
                                             <div class="space-y-1 text-center">
                                                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
@@ -1244,7 +1284,6 @@
                                                         <span>Upload a file</span>
                                                         <input id="resume_file" name="resume_file" type="file" class="sr-only" accept=".pdf,.doc,.docx">
                                                     </label>
-                                                    <!-- <p class="pl-1">or drag and drop</p> -->
                                                 </div>
                                                 <p class="text-xs text-gray-500">
                                                     PDF, DOC, DOCX up to 5MB
@@ -1334,9 +1373,6 @@ function showTab(tabId, updateURL = true) {
     if (section) {
         section.classList.remove('hidden');
         section.classList.add('active');
-        
-        // Scroll to top of section
-        // section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     
     // Update sidebar active state
@@ -1372,11 +1408,384 @@ window.addEventListener('popstate', function() {
     }
 });
 
+// File handling variables
+let selectedFiles = [];
+let existingAttachments = [];
+
+// File handling functions
+function handleFileSelection(input) {
+    const files = Array.from(input.files);
+    
+    // Check total files count
+    const totalFiles = selectedFiles.length + files.length;
+    if (totalFiles > 5) {
+        alert('You can only upload up to 5 files. Please remove some files first.');
+        input.value = '';
+        return;
+    }
+    
+    // Check each file size (max 5MB)
+    for (const file of files) {
+        if (file.size > 5 * 1024 * 1024) {
+            alert(`File "${file.name}" is too large. Maximum size is 5MB.`);
+            input.value = '';
+            return;
+        }
+    }
+    
+    // Add new files to selectedFiles array
+    files.forEach(file => {
+        if (!selectedFiles.some(f => f.name === file.name && f.size === file.size)) {
+            selectedFiles.push(file);
+        }
+    });
+    
+    // Update UI
+    updateFilePreview();
+    updateFileCounter();
+    
+    // Clear the input to allow selecting the same file again if needed
+    input.value = '';
+}
+
+function updateFilePreview() {
+    const filesList = document.getElementById('files-list');
+    const container = document.getElementById('selected-files-container');
+    
+    filesList.innerHTML = '';
+    
+    if (selectedFiles.length > 0) {
+        selectedFiles.forEach((file, index) => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors';
+            fileItem.innerHTML = `
+                <div class="flex items-center flex-1 min-w-0">
+                    <div class="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-md flex items-center justify-center mr-3">
+                        <i class="fas fa-file text-gray-500"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 truncate">${file.name}</p>
+                        <p class="text-xs text-gray-500">${formatFileSize(file.size)}</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2 ml-3">
+                    <button type="button" onclick="viewFilePreview(${index})" class="text-blue-600 hover:text-blue-800 p-1" title="Preview">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button type="button" onclick="removeSelectedFile(${index})" class="text-red-600 hover:text-red-800 p-1" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            filesList.appendChild(fileItem);
+        });
+        container.classList.remove('hidden');
+        document.getElementById('clear-all-btn').classList.remove('hidden');
+    } else {
+        container.classList.add('hidden');
+        document.getElementById('clear-all-btn').classList.add('hidden');
+    }
+}
+
+function updateFileCounter() {
+    const currentCount = selectedFiles.length + existingAttachments.length;
+    document.getElementById('current-file-count').textContent = currentCount;
+    
+    // Update file counter color if limit is reached
+    const fileCounter = document.getElementById('file-counter');
+    if (currentCount >= 5) {
+        fileCounter.classList.add('text-red-600', 'font-medium');
+    } else {
+        fileCounter.classList.remove('text-red-600', 'font-medium');
+    }
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+function removeSelectedFile(index) {
+    selectedFiles.splice(index, 1);
+    updateFilePreview();
+    updateFileCounter();
+}
+
+function clearAllFiles() {
+    if (selectedFiles.length > 0 && confirm('Are you sure you want to remove all selected files?')) {
+        selectedFiles = [];
+        updateFilePreview();
+        updateFileCounter();
+    }
+}
+
+function viewFilePreview(index) {
+    const file = selectedFiles[index];
+    
+    // For PDF files
+    if (file.type === 'application/pdf') {
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL, '_blank');
+        return;
+    }
+    
+    // For image files
+    if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg max-w-4xl max-h-[90vh] overflow-auto">
+                    <div class="flex justify-between items-center p-4 border-b">
+                        <h3 class="text-lg font-medium text-gray-900">${file.name}</h3>
+                        <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <img src="${e.target.result}" alt="${file.name}" class="max-w-full h-auto mx-auto">
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // For other file types, just show file info
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4';
+        modal.innerHTML = `
+            <div class="bg-white rounded-lg max-w-md w-full">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h3 class="text-lg font-medium text-gray-900">File Preview</h3>
+                    <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-center w-20 h-20 bg-gray-100 rounded-lg mx-auto mb-4">
+                        <i class="fas fa-file text-gray-500 text-3xl"></i>
+                    </div>
+                    <h4 class="text-center font-medium text-gray-900 mb-2">${file.name}</h4>
+                    <div class="text-sm text-gray-500 text-center space-y-1">
+                        <p>Type: ${file.type || 'Unknown'}</p>
+                        <p>Size: ${formatFileSize(file.size)}</p>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+}
+
+function removeExistingAttachment(index) {
+    if (confirm('Are you sure you want to remove this attachment?')) {
+        existingAttachments.splice(index, 1);
+        
+        // Update UI
+        const existingContainer = document.getElementById('existing-attachments-container');
+        if (existingAttachments.length > 0) {
+            existingContainer.innerHTML = `
+                <h4 class="text-sm font-medium text-gray-700 mb-2">Existing Attachments:</h4>
+                <div id="existing-attachments-list" class="space-y-2">
+                    ${existingAttachments.map((attachment, i) => `
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200">
+                            <div class="flex items-center flex-1 min-w-0">
+                                <div class="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-md flex items-center justify-center mr-3">
+                                    <i class="fas fa-file text-gray-500"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate">${attachment.name}</p>
+                                    <input type="hidden" name="existing_attachments[]" value="${attachment.path}">
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2 ml-3">
+                                <a href="/storage/${attachment.path}" 
+                                   target="_blank" 
+                                   class="text-blue-600 hover:text-blue-800 p-1"
+                                   title="View">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button type="button" onclick="removeExistingAttachment(${i})" 
+                                        class="text-red-600 hover:text-red-800 p-1"
+                                        title="Remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        } else {
+            existingContainer.innerHTML = '';
+        }
+        updateFileCounter();
+    }
+}
+
+// Certification form functions
+function resetCertificationForm() {
+    // Reset form fields
+    document.getElementById('certificationFormElement').reset();
+    document.getElementById('certification_id').value = '';
+    
+    // Reset form title and button
+    document.getElementById('certificationFormTitle').textContent = 'Add New Certification';
+    document.getElementById('certificationSubmitBtn').textContent = 'Add Certification';
+    document.getElementById('certificationSubmitBtn').className = document.getElementById('certificationSubmitBtn').className
+        .replace('bg-green-600', 'bg-blue-600')
+        .replace('hover:bg-green-700', 'hover:bg-blue-700');
+    
+    // Reset form action to store route
+    document.getElementById('certificationFormElement').action = '{{ route("job-seeker.professional-profile.certification.store") }}';
+    
+    // Remove PUT method if exists
+    const methodInput = document.getElementById('certificationFormElement').querySelector('input[name="_method"]');
+    if (methodInput) {
+        methodInput.remove();
+    }
+    
+    // Clear files
+    selectedFiles = [];
+    existingAttachments = [];
+    updateFilePreview();
+    updateFileCounter();
+    
+    // Clear existing attachments container
+    const existingContainer = document.getElementById('existing-attachments-container');
+    existingContainer.innerHTML = '';
+    
+    // Show the form
+    document.getElementById('certificationForm').classList.remove('hidden');
+    document.getElementById('certificationForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+function editCertification(id, name, issuingOrganization, issueDate, expirationDate, credentialId, credentialUrl, attachments) {
+    // Set form values
+    document.getElementById('certification_id').value = id;
+    document.getElementById('certification_name').value = name;
+    document.getElementById('certification_issuing_organization').value = issuingOrganization;
+    document.getElementById('certification_issue_date').value = issueDate;
+    document.getElementById('certification_expiration_date').value = expirationDate || '';
+    document.getElementById('certification_credential_id').value = credentialId || '';
+    document.getElementById('certification_credential_url').value = credentialUrl || '';
+    
+    // Update form title and button
+    document.getElementById('certificationFormTitle').textContent = 'Edit Certification';
+    document.getElementById('certificationSubmitBtn').textContent = 'Update Certification';
+    document.getElementById('certificationSubmitBtn').className = document.getElementById('certificationSubmitBtn').className
+        .replace('bg-blue-600', 'bg-green-600')
+        .replace('hover:bg-blue-700', 'hover:bg-green-700');
+    
+    // Update form action for PUT method
+    document.getElementById('certificationFormElement').action = `/job-seeker/professional-profile/certification/${id}`;
+    
+    // Add method spoofing for PUT
+    const form = document.getElementById('certificationFormElement');
+    let methodInput = form.querySelector('input[name="_method"]');
+    if (!methodInput) {
+        methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        methodInput.value = 'PUT';
+        form.appendChild(methodInput);
+    } else {
+        methodInput.value = 'PUT';
+    }
+    
+    // Handle existing attachments
+    existingAttachments = attachments || [];
+    const existingContainer = document.getElementById('existing-attachments-container');
+    existingContainer.innerHTML = '';
+    
+    if (existingAttachments.length > 0) {
+        const existingDiv = document.createElement('div');
+        existingDiv.className = 'mb-4';
+        existingDiv.innerHTML = `
+            <h4 class="text-sm font-medium text-gray-700 mb-2">Existing Attachments:</h4>
+            <div id="existing-attachments-list" class="space-y-2">
+                ${existingAttachments.map((attachment, index) => `
+                    <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200">
+                        <div class="flex items-center flex-1 min-w-0">
+                            <div class="flex-shrink-0 w-10 h-10 bg-gray-100 rounded-md flex items-center justify-center mr-3">
+                                <i class="fas fa-file text-gray-500"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate">${attachment.name}</p>
+                                <input type="hidden" name="existing_attachments[]" value="${attachment.path}">
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2 ml-3">
+                            <a href="/storage/${attachment.path}" 
+                               target="_blank" 
+                               class="text-blue-600 hover:text-blue-800 p-1"
+                               title="View">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button type="button" onclick="removeExistingAttachment(${index})" 
+                                    class="text-red-600 hover:text-red-800 p-1"
+                                    title="Remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        existingContainer.appendChild(existingDiv);
+    }
+    
+    // Clear selected files
+    selectedFiles = [];
+    updateFilePreview();
+    updateFileCounter();
+    
+    // Show form
+    document.getElementById('certificationForm').classList.remove('hidden');
+    document.getElementById('certificationForm').scrollIntoView({ behavior: 'smooth' });
+}
+
 // Form Toggle Functions
+function toggleCertificationForm() {
+    const form = document.getElementById('certificationForm');
+    if (form.classList.contains('hidden')) {
+        resetCertificationForm();
+    } else {
+        form.classList.add('hidden');
+    }
+}
+
 function toggleEducationForm() {
     const form = document.getElementById('educationForm');
     form.classList.toggle('hidden');
     if (!form.classList.contains('hidden')) {
+        // Reset to create mode when showing
+        document.getElementById('educationFormElement').reset();
+        document.getElementById('education_id').value = '';
+        document.getElementById('educationFormTitle').textContent = 'Add New Education';
+        document.getElementById('educationSubmitBtn').textContent = 'Add Education';
+        document.getElementById('educationSubmitBtn').className = document.getElementById('educationSubmitBtn').className
+            .replace('bg-green-600', 'bg-blue-600')
+            .replace('hover:bg-green-700', 'hover:bg-blue-700');
+        
+        // Reset form action
+        document.getElementById('educationFormElement').action = '{{ route("job-seeker.professional-profile.education.store") }}';
+        
+        // Remove method input if exists
+        const methodInput = document.getElementById('educationFormElement').querySelector('input[name="_method"]');
+        if (methodInput) {
+            methodInput.remove();
+        }
+        
         form.scrollIntoView({ behavior: 'smooth' });
     }
 }
@@ -1385,6 +1794,24 @@ function toggleSkillForm() {
     const form = document.getElementById('skillForm');
     form.classList.toggle('hidden');
     if (!form.classList.contains('hidden')) {
+        // Reset to create mode when showing
+        document.getElementById('skillFormElement').reset();
+        document.getElementById('skill_id').value = '';
+        document.getElementById('skillFormTitle').textContent = 'Add New Skill';
+        document.getElementById('skillSubmitBtn').textContent = 'Add Skill';
+        document.getElementById('skillSubmitBtn').className = document.getElementById('skillSubmitBtn').className
+            .replace('bg-green-600', 'bg-blue-600')
+            .replace('hover:bg-green-700', 'hover:bg-blue-700');
+        
+        // Reset form action
+        document.getElementById('skillFormElement').action = '{{ route("job-seeker.professional-profile.skill.store") }}';
+        
+        // Remove method input if exists
+        const methodInput = document.getElementById('skillFormElement').querySelector('input[name="_method"]');
+        if (methodInput) {
+            methodInput.remove();
+        }
+        
         form.scrollIntoView({ behavior: 'smooth' });
     }
 }
@@ -1393,6 +1820,24 @@ function toggleExperienceForm() {
     const form = document.getElementById('experienceForm');
     form.classList.toggle('hidden');
     if (!form.classList.contains('hidden')) {
+        // Reset to create mode when showing
+        document.getElementById('experienceFormElement').reset();
+        document.getElementById('experience_id').value = '';
+        document.getElementById('experienceFormTitle').textContent = 'Add New Experience';
+        document.getElementById('experienceSubmitBtn').textContent = 'Add Experience';
+        document.getElementById('experienceSubmitBtn').className = document.getElementById('experienceSubmitBtn').className
+            .replace('bg-green-600', 'bg-blue-600')
+            .replace('hover:bg-green-700', 'hover:bg-blue-700');
+        
+        // Reset form action
+        document.getElementById('experienceFormElement').action = '{{ route("job-seeker.professional-profile.experience.store") }}';
+        
+        // Remove method input if exists
+        const methodInput = document.getElementById('experienceFormElement').querySelector('input[name="_method"]');
+        if (methodInput) {
+            methodInput.remove();
+        }
+        
         form.scrollIntoView({ behavior: 'smooth' });
     }
 }
@@ -1401,14 +1846,24 @@ function toggleProjectForm() {
     const form = document.getElementById('projectForm');
     form.classList.toggle('hidden');
     if (!form.classList.contains('hidden')) {
-        form.scrollIntoView({ behavior: 'smooth' });
-    }
-}
-
-function toggleCertificationForm() {
-    const form = document.getElementById('certificationForm');
-    form.classList.toggle('hidden');
-    if (!form.classList.contains('hidden')) {
+        // Reset to create mode when showing
+        document.getElementById('projectFormElement').reset();
+        document.getElementById('project_id').value = '';
+        document.getElementById('projectFormTitle').textContent = 'Add New Project';
+        document.getElementById('projectSubmitBtn').textContent = 'Add Project';
+        document.getElementById('projectSubmitBtn').className = document.getElementById('projectSubmitBtn').className
+            .replace('bg-green-600', 'bg-blue-600')
+            .replace('hover:bg-green-700', 'hover:bg-blue-700');
+        
+        // Reset form action
+        document.getElementById('projectFormElement').action = '{{ route("job-seeker.professional-profile.project.store") }}';
+        
+        // Remove method input if exists
+        const methodInput = document.getElementById('projectFormElement').querySelector('input[name="_method"]');
+        if (methodInput) {
+            methodInput.remove();
+        }
+        
         form.scrollIntoView({ behavior: 'smooth' });
     }
 }
@@ -1417,6 +1872,24 @@ function toggleSocialLinkForm() {
     const form = document.getElementById('socialLinkForm');
     form.classList.toggle('hidden');
     if (!form.classList.contains('hidden')) {
+        // Reset to create mode when showing
+        document.getElementById('socialLinkFormElement').reset();
+        document.getElementById('social_link_id').value = '';
+        document.getElementById('socialLinkFormTitle').textContent = 'Add New Social Link';
+        document.getElementById('socialLinkSubmitBtn').textContent = 'Add Social Link';
+        document.getElementById('socialLinkSubmitBtn').className = document.getElementById('socialLinkSubmitBtn').className
+            .replace('bg-green-600', 'bg-blue-600')
+            .replace('hover:bg-green-700', 'hover:bg-blue-700');
+        
+        // Reset form action
+        document.getElementById('socialLinkFormElement').action = '{{ route("job-seeker.professional-profile.social-link.store") }}';
+        
+        // Remove method input if exists
+        const methodInput = document.getElementById('socialLinkFormElement').querySelector('input[name="_method"]');
+        if (methodInput) {
+            methodInput.remove();
+        }
+        
         form.scrollIntoView({ behavior: 'smooth' });
     }
 }
@@ -1601,42 +2074,6 @@ function editProject(id, title, role, startDate, endDate, isOngoing, description
     document.getElementById('projectForm').scrollIntoView({ behavior: 'smooth' });
 }
 
-function editCertification(id, name, issuingOrganization, issueDate, expirationDate, credentialId, credentialUrl) {
-    // Set form values
-    document.getElementById('certification_id').value = id;
-    document.getElementById('certification_name').value = name;
-    document.getElementById('certification_issuing_organization').value = issuingOrganization;
-    document.getElementById('certification_issue_date').value = issueDate;
-    document.getElementById('certification_expiration_date').value = expirationDate || '';
-    document.getElementById('certification_credential_id').value = credentialId || '';
-    document.getElementById('certification_credential_url').value = credentialUrl || '';
-    
-    // Update form title and button
-    document.getElementById('certificationFormTitle').textContent = 'Edit Certification';
-    document.getElementById('certificationSubmitBtn').textContent = 'Update Certification';
-    document.getElementById('certificationSubmitBtn').className = document.getElementById('certificationSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
-    
-    // Update form action
-    document.getElementById('certificationFormElement').action = `/job-seeker/professional-profile/certification/${id}`;
-    
-    // Add method spoofing for PUT
-    const form = document.getElementById('certificationFormElement');
-    let methodInput = form.querySelector('input[name="_method"]');
-    if (!methodInput) {
-        methodInput = document.createElement('input');
-        methodInput.type = 'hidden';
-        methodInput.name = '_method';
-        methodInput.value = 'PUT';
-        form.appendChild(methodInput);
-    } else {
-        methodInput.value = 'PUT';
-    }
-    
-    // Show form
-    document.getElementById('certificationForm').classList.remove('hidden');
-    document.getElementById('certificationForm').scrollIntoView({ behavior: 'smooth' });
-}
-
 function editSocialLink(id, platform, url, username, isPublic) {
     // Set form values
     document.getElementById('social_link_id').value = id;
@@ -1670,50 +2107,6 @@ function editSocialLink(id, platform, url, username, isPublic) {
     document.getElementById('socialLinkForm').classList.remove('hidden');
     document.getElementById('socialLinkForm').scrollIntoView({ behavior: 'smooth' });
 }
-
-// Reset forms to create mode when toggled
-document.addEventListener('DOMContentLoaded', function() {
-    // Education form reset
-    document.getElementById('educationFormElement').addEventListener('reset', function() {
-        document.getElementById('educationFormTitle').textContent = 'Add New Education';
-        document.getElementById('educationSubmitBtn').textContent = 'Add Education';
-        document.getElementById('educationSubmitBtn').className = document.getElementById('educationSubmitBtn').className.replace('bg-green-600', 'bg-blue-600').replace('hover:bg-green-700', 'hover:bg-blue-700');
-        document.getElementById('educationFormElement').action = '{{ route('job-seeker.professional-profile.education.store') }}';
-        
-        const methodInput = document.getElementById('educationFormElement').querySelector('input[name="_method"]');
-        if (methodInput) {
-            methodInput.remove();
-        }
-    });
-    
-    // Similar for other forms
-    const forms = ['skillFormElement', 'experienceFormElement', 'projectFormElement', 'certificationFormElement', 'socialLinkFormElement'];
-    
-    forms.forEach(formId => {
-        const form = document.getElementById(formId);
-        if (form) {
-            form.addEventListener('reset', function() {
-                const formTitle = document.getElementById(formId.replace('Element', 'Title'));
-                const submitBtn = document.getElementById(formId.replace('Element', 'SubmitBtn'));
-                
-                if (formTitle && submitBtn) {
-                    formTitle.textContent = formTitle.textContent.replace('Edit', 'Add New');
-                    submitBtn.textContent = submitBtn.textContent.replace('Update', 'Add');
-                    submitBtn.className = submitBtn.className.replace('bg-green-600', 'bg-blue-600').replace('hover:bg-green-700', 'hover:bg-blue-700');
-                }
-                
-                // Reset action to store route
-                const baseRoute = formId.replace('FormElement', '').replace(/([A-Z])/g, '-$1').toLowerCase();
-                form.action = `/job-seeker/professional-profile/${baseRoute}`;
-                
-                const methodInput = form.querySelector('input[name="_method"]');
-                if (methodInput) {
-                    methodInput.remove();
-                }
-            });
-        }
-    });
-});
 
 // Photo Upload
 document.getElementById('profile_photo').addEventListener('change', function(e) {
@@ -1754,11 +2147,93 @@ function confirmDeletePhoto() {
     }
 }
 
-// Initialize date toggles
+// Drag and drop functionality
 document.addEventListener('DOMContentLoaded', function() {
+    const dropArea = document.getElementById('file-drop-area');
+    if (dropArea) {
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        // Highlight drop area when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        // Handle dropped files
+        dropArea.addEventListener('drop', handleDrop, false);
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        function highlight() {
+            dropArea.classList.add('border-blue-500', 'bg-blue-50');
+        }
+        
+        function unhighlight() {
+            dropArea.classList.remove('border-blue-500', 'bg-blue-50');
+        }
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            // Create a new input event
+            const input = document.getElementById('certification_attachments');
+            input.files = files;
+            handleFileSelection(input);
+        }
+    }
+    
+    // Initialize file counter
+    updateFileCounter();
+    
+    // Initialize date toggles
     toggleEducationEndDate();
     toggleExperienceEndDate();
     toggleProjectEndDate();
+});
+
+// Before form submission, create a FileList for the form
+document.getElementById('certificationFormElement').addEventListener('submit', function(e) {
+    // Create a DataTransfer object to hold the files
+    const dataTransfer = new DataTransfer();
+    
+    // Add all selected files
+    selectedFiles.forEach(file => {
+        dataTransfer.items.add(file);
+    });
+    
+    // Update the file input with the files
+    const fileInput = document.getElementById('certification_attachments');
+    fileInput.files = dataTransfer.files;
+    
+    // Check total file count
+    const totalFiles = selectedFiles.length + existingAttachments.length;
+    if (totalFiles > 5) {
+        e.preventDefault();
+        alert('You can only upload up to 5 files in total. Please remove some files.');
+        return false;
+    }
+    
+    // Check individual file sizes
+    for (const file of selectedFiles) {
+        if (file.size > 5 * 1024 * 1024) {
+            e.preventDefault();
+            alert(`File "${file.name}" is too large. Maximum size is 5MB.`);
+            return false;
+        }
+    }
+    
+    return true;
 });
 </script>
 

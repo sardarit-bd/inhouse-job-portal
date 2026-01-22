@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class SiteSetting extends Model
 {
@@ -32,5 +32,16 @@ class SiteSetting extends Model
         $setting = self::firstOrCreate(['key' => $key]);
         $setting->logo = $logoPath;
         $setting->save();
+    }
+
+    public static function getFaviconUrl()
+    {
+        $favicon = self::getValue('favicon');
+
+        if ($favicon && Storage::disk('public')->exists($favicon)) {
+            return asset('storage/' . $favicon);
+        }
+
+        return null;
     }
 }

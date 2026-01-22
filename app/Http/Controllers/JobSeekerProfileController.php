@@ -15,8 +15,9 @@ use App\Models\JobSeekerProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator; 
-use Illuminalte\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 class JobSeekerProfileController extends Controller
 {
     
@@ -561,48 +562,103 @@ class JobSeekerProfileController extends Controller
     }
 
     // Certification methods
-    public function storeCertification(Request $request)
-    {
-        session(['active_profile_tab' => 'certifications']);
+    // Certification methods - updated with attachments
+public function storeCertification(Request $request)
+{
+    session(['active_profile_tab' => 'certifications']);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'issuing_organization' => 'required|string|max:255',
-            'issue_date' => 'required|date',
-            'expiration_date' => 'nullable|date|after:issue_date',
-            'credential_id' => 'nullable|string|max:255',
-            'credential_url' => 'nullable|url|max:255',
-            'skills' => 'nullable|array',
-        ]);
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'issuing_organization' => 'required|string|max:255',
+        'issue_date' => 'required|date',
+        'expiration_date' => 'nullable|date|after:issue_date',
+        'credential_id' => 'nullable|string|max:255',
+        'credential_url' => 'nullable|url|max:255',
+        'skills' => 'nullable|array',
+        'attachments' => 'nullable|array',
+        'attachments.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:5120', // 5MB
+    ]);
 
-        $user = Auth::user();
-        $user->certifications()->create($validated);
-
-        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Certification added successfully.');
-    }
-
-    public function updateCertification(Request $request, Certification $certification)
-    {
-        session(['active_profile_tab' => 'certifications']);
-
-        if (Auth::id() !== $certification->user_id) {
-            abort(403, 'Unauthorized action.');
+    $user = Auth::user();
+    
+    // Handle file uploads
+    $attachmentPaths = [];
+    if ($request->hasFile('attachments')) {
+        foreach ($request->file('attachments') as $file) {
+            $path = $file->store('certification-attachments', 'public');
+            $attachmentPaths[] = [
+                'name' => $file->getClientOriginalName(),
+                'path' => $path,
+                'mime_type' => $file->getMimeType(),
+                'size' => $file->getSize(),
+            ];
         }
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'issuing_organization' => 'required|string|max:255',
-            'issue_date' => 'required|date',
-            'expiration_date' => 'nullable|date|after:issue_date',
-            'credential_id' => 'nullable|string|max:255',
-            'credential_url' => 'nullable|url|max:255',
-            'skills' => 'nullable|array',
-        ]);
-
-        $certification->update($validated);
-
-        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Certification updated successfully.');
+        $validated['attachments'] = $attachmentPaths;
     }
+    
+    $certification = $user->certifications()->create($validated);
+
+    return redirect()->route('job-seeker.professional-profile.edit')
+        ->with('success', 'Certification added successfully.');
+}
+
+public function updateCertification(Request $request, Certification $certification)
+{
+    session(['active_profile_tab' => 'certifications']);
+
+    if (Auth::id() !== $certification->user_id) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'issuing_organization' => 'required|string|max:255',
+        'issue_date' => 'required|date',
+        'expiration_date' => 'nullable|date|after:issue_date',
+        'credential_id' => 'nullable|string|max:255',
+        'credential_url' => 'nullable|url|max:255',
+        'skills' => 'nullable|array',
+        'attachments' => 'nullable|array',
+        'attachments.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:5120',
+        'existing_attachments' => 'nullable|array',
+        'existing_attachments.*' => 'string',
+    ]);
+
+    // Handle existing attachments
+    $existingAttachments = $request->input('existing_attachments', []);
+    $currentAttachments = $certification->attachments ?? [];
+    $updatedAttachments = [];
+    
+    // Keep only selected existing attachments
+    foreach ($currentAttachments as $attachment) {
+        if (in_array($attachment['path'], $existingAttachments)) {
+            $updatedAttachments[] = $attachment;
+        } else {
+            // Delete the file from storage
+            Storage::disk('public')->delete($attachment['path']);
+        }
+    }
+    
+    // Handle new file uploads
+    if ($request->hasFile('attachments')) {
+        foreach ($request->file('attachments') as $file) {
+            $path = $file->store('certification-attachments', 'public');
+            $updatedAttachments[] = [
+                'name' => $file->getClientOriginalName(),
+                'path' => $path,
+                'mime_type' => $file->getMimeType(),
+                'size' => $file->getSize(),
+            ];
+        }
+    }
+    
+    $validated['attachments'] = $updatedAttachments;
+
+    $certification->update($validated);
+
+    return redirect()->route('job-seeker.professional-profile.edit')
+        ->with('success', 'Certification updated successfully.');
+}
 
     public function destroyCertification(Certification $certification)
     {

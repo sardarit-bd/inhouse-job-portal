@@ -6,14 +6,13 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Auth;
 use App\Models\ContactMessage;
 use App\Models\Company;
 use App\Models\JobApplication;
 use App\Models\Job;
 use App\Models\SiteSetting;
 use Illuminate\Support\Facades\Schema;
-
-
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,10 +31,36 @@ class AppServiceProvider extends ServiceProvider
             view()->share('siteLogo', $siteLogo);
         }
 
+        // Admin Layout - Unread Messages and Notifications
         View::composer('layouts.admin', function ($view) {
             if (auth()->check() && auth()->user()->role === 'admin') {
                 $unreadMessagesCount = ContactMessage::unread()->count();
-                $view->with('unreadMessagesCount', $unreadMessagesCount);
+                
+                // Add notification count for admin
+                $user = auth()->user();
+                $notificationCount = 0;
+                $notifications = collect();
+                
+                try {
+                    // Check if notifications table exists
+                    if (Schema::hasTable('notifications')) {
+                        $notificationCount = $user->unreadNotifications()->count();
+                        $notifications = $user->notifications()
+                            ->orderBy('created_at', 'desc')
+                            ->take(10)
+                            ->get();
+                    }
+                } catch (\Exception $e) {
+                    // Table doesn't exist yet, use empty collection
+                    $notificationCount = 0;
+                    $notifications = collect();
+                }
+                
+                $view->with([
+                    'unreadMessagesCount' => $unreadMessagesCount,
+                    'notifications' => $notifications,
+                    'notificationCount' => $notificationCount,
+                ]);
             }
         });
 

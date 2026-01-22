@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Job extends Model
 {
@@ -15,6 +16,7 @@ class Job extends Model
 
     protected $fillable = [
         'title',
+        'slug',
         'user_id',
         'description',
         'company_name',
@@ -49,6 +51,53 @@ class Job extends Model
         // 'salary_min' => 'decimal:2', // ❌ Remove this
         // 'salary_max' => 'decimal:2', // ❌ Remove this
     ];
+
+    // ✅ Boot method to generate slug
+    // app/Models/Job.php
+
+// ✅ Generate slug with uniqueness check (public method)
+public function generateSlug()
+{
+    $slug = Str::slug($this->title);
+    $originalSlug = $slug;
+    $count = 1;
+
+    while (static::where('slug', $slug)->where('id', '!=', $this->id)->exists()) {
+        $slug = $originalSlug . '-' . $count++;
+    }
+
+    return $slug;
+}
+
+    // ✅ Generate unique slug
+    public function generateUniqueSlug()
+    {
+        $slug = Str::slug($this->title);
+        $originalSlug = $slug;
+        $count = 1;
+
+        // Check if slug exists
+        while (static::where('slug', $slug)->where('id', '!=', $this->id ?? null)->exists()) {
+            $slug = $originalSlug . '-' . $count++;
+        }
+
+        return $slug;
+    }
+
+    // ✅ Get route key name for URL
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    // ✅ Find by ID or Slug
+    public static function findBySlugOrId($identifier)
+    {
+        if (is_numeric($identifier)) {
+            return static::find($identifier);
+        }
+        return static::where('slug', $identifier)->first();
+    }
 
     // ✅ Custom accessor for salary field
     public function getSalaryAttribute($value)
@@ -256,5 +305,15 @@ class Job extends Model
         return $this->applications()
             ->where('user_id', $userId)
             ->first();
+    }
+
+    public function getSlugOrIdAttribute()
+    {
+        return $this->slug ?: $this->id;
+    }
+
+    public function getJobUrlAttribute()
+    {
+        return route('jobs.show', $this->slug ?: $this->id);
     }
 }

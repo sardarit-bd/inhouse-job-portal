@@ -64,50 +64,94 @@
 
     <!-- Categories Section Start -->
     <div id="categories" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <!-- Section Title -->
-            <div class="flex flex-col md:flex-row items-center justify-between mb-16">
-                <h2 class="text-3xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-0">
-                    Categories
-                </h2>
+    <div class="container mx-auto px-4">
+        <!-- Section Title -->
+        <div class="flex flex-col md:flex-row items-center justify-between mb-16">
+            <h2 class="text-3xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-0">
+                Categories
+            </h2>
 
-                <a href="{{ route('jobs.index') }}" 
-                class="text-blue-600 font-bold text-lg hover:underline transition-all duration-300">
-                    View All Categories
-                </a>
-            </div>
-
-            <!-- Categories Grid -->
-            @php
-                $categories = \App\Models\Category::where('is_active', true)
-                    ->withCount(['jobs' => function($query) {
-                        $query->active();
-                    }])
-                    ->orderBy('order')
-                    ->take(8)
-                    ->get();
-            @endphp
-            
-            @if($categories->count() > 0)
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                    @foreach($categories as $category)
-                        <a href="{{ route('jobs.index', ['category' => $category->id]) }}" 
-                           class="group bg-gray-50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-white rounded-2xl p-8 text-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-gray-200 hover:border-blue-200">
-                            <h3 class="text-xl font-bold text-blue-600 mb-2 group-hover:text-blue-700">{{ $category->name }}</h3>
-                            <p class="text-gray-600 text-sm">{{ $category->jobs_count }} open jobs</p>
-                        </a>
-                    @endforeach
-                </div>
-            @else
-                <div class="text-center py-12">
-                    <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
-                        <i class="fas fa-folder-open text-3xl text-gray-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">No Categories Available</h3>
-                </div>
-            @endif
+            <a href="{{ route('jobs.index') }}" 
+            class="text-blue-600 font-bold text-lg hover:underline transition-all duration-300">
+                View All Categories
+            </a>
         </div>
+
+        <!-- Categories Grid -->
+        @php
+            $categories = \App\Models\Category::where('is_active', true)
+                ->withCount(['jobs' => function($query) {
+                    $query->active();
+                }])
+                ->orderBy('order')
+                ->get();
+        @endphp
+        
+        @if($categories->count() > 0)
+            <style>
+                .responsive-card {
+                    height: 85px;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .responsive-front, .responsive-back {
+                    position: absolute;
+                    inset: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                    padding: 0.5rem;
+                }
+                
+                .responsive-front {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                
+                .responsive-back {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                
+                .responsive-card:hover .responsive-front {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                
+                .responsive-card:hover .responsive-back {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            </style>
+
+            <!-- Using max-width classes -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 justify-items-center">
+                @foreach($categories as $category)
+                    <a href="{{ route('jobs.index', ['category' => $category->id]) }}" 
+                    class="responsive-card group bg-gray-50 hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 rounded-lg transition-all duration-300 hover:shadow-lg border border-gray-200 hover:border-blue-300 w-full max-w-[180px]">
+                        
+                        <!-- Front - Category Name -->
+                        <div class="responsive-front">
+                            <div class="text-center w-full">
+                                <h3 class="text-base font-bold text-gray-800 truncate px-1">{{ $category->name }}</h3>
+                            </div>
+                        </div>
+                        
+                        <!-- Back - Job Count -->
+                        <div class="responsive-back">
+                            <div class="text-center w-full">
+                                <div class="text-2xl font-bold text-blue-700">{{ $category->jobs_count }}</div>
+                                <p class="text-sm text-gray-600 font-medium">Open Jobs</p>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        @endif
     </div>
+</div>
     <!-- Categories Section End -->
 
     <!-- Featured Jobs Section Start -->
@@ -117,19 +161,12 @@
             <div class="flex flex-col md:flex-row items-center justify-between mb-10">
                 <h2 class="text-3xl md:text-3xl font-bold text-gray-900 mb-3">Latest Job Opportunities</h2>
                 <a href="{{ route('jobs.index') }}" 
-                   class="text-blue-600 font-bold text-lg hover:underline transition-all duration-300">
+                class="text-blue-600 font-bold text-lg hover:underline transition-all duration-300">
                     View All Jobs
                 </a>
             </div>
 
-            <!-- Jobs Grid -->
-            @php
-                $featuredJobs = \App\Models\Job::active()
-                    ->with(['company', 'user'])
-                    ->orderBy('created_at', 'desc')
-                    ->take(6)
-                    ->get();
-            @endphp
+            <!-- Jobs Grid -->            
             
             @if($featuredJobs->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -165,9 +202,17 @@
                             </div>
                             <div class="flex-1 min-w-0">
                                 <h3 class="text-lg font-bold text-gray-900 truncate group-hover:text-blue-700 transition-colors">
-                                    <a href="{{ route('jobs.show', $job) }}" class="hover:underline">{{ $job->title }}</a>
+                                    @if($job->slug)
+                                        <a href="{{ route('jobs.show', $job->slug) }}" class="hover:underline">
+                                    @else
+                                        <a href="{{ route('jobs.show', $job->id) }}" class="hover:underline">
+                                    @endif
+                                        {{ $job->title }}
+                                    </a>
                                 </h3>
-                                <p class="text-sm font-medium text-gray-700 mt-1">{{ $job->company ? $job->company->name : ($job->company_name ?? '') }}</p>
+                                <p class="text-sm font-medium text-gray-700 mt-1">
+                                    {{ $job->company ? $job->company->name : ($job->company_name ?? '') }}
+                                </p>
                             </div>
                         </div>
 
@@ -254,7 +299,7 @@
                                 </svg>
                                 {{ $job->created_at->diffForHumans() }}
                             </div>
-                            <a href="{{ route('jobs.show', $job) }}" 
+                            <a href="{{ route('jobs.show', $job->slug) }}" 
                             class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all duration-300 transform group-hover:scale-105 hover:shadow-md">
                                 Apply Now
                                 <svg class="w-3.5 h-3.5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -27,6 +27,7 @@ class SettingController extends Controller
         $validated = $request->validate([
             'site_name'        => 'required|string|max:255',
             'site_logo'        => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp|max:5048',
+            'favicon'          => 'nullable|mimes:ico,png,jpg,gif,svg|max:2048',
             'contact_email'    => 'required|email',
             'contact_phone'    => 'nullable|string|max:50',
             'contact_address'  => 'nullable|string',
@@ -55,8 +56,22 @@ class SettingController extends Controller
             SiteSetting::setValue('site_logo', $logoPath);
         }
 
+        // Favicon upload
+        if ($request->hasFile('favicon')) {
+            $file = $request->file('favicon');
+            
+            // Delete old favicon
+            $oldFavicon = SiteSetting::where('key', 'favicon')->value('value');
+            if ($oldFavicon && Storage::disk('public')->exists($oldFavicon)) {
+                Storage::disk('public')->delete($oldFavicon);
+            }
+
+            $faviconPath = $file->store('favicons', 'public');
+            SiteSetting::setValue('favicon', $faviconPath);
+        }
+
         foreach ($validated as $key => $value) {
-            if ($key !== 'site_logo') {
+            if (!in_array($key, ['site_logo', 'favicon'])) {
                 SiteSetting::setValue($key, $value);
             }
         }
@@ -84,5 +99,23 @@ class SettingController extends Controller
         $setting->save();
 
         return redirect()->back()->with('success', 'Logo deleted successfully.');
+    }
+
+    public function deleteFavicon(Request $request)
+    {
+        $setting = SiteSetting::where('key', 'favicon')->first();
+
+        if (!$setting || !$setting->value) {
+            return redirect()->back()->with('error', 'No favicon found.');
+        }
+
+        if (Storage::disk('public')->exists($setting->value)) {
+            Storage::disk('public')->delete($setting->value);
+        }
+
+        $setting->value = null;
+        $setting->save();
+
+        return redirect()->back()->with('success', 'Favicon deleted successfully.');
     }
 }

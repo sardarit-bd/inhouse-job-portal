@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Carbon;
 
 class RegisteredUserController extends Controller
 {
@@ -34,14 +35,16 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
-            'role' => 'job_seeker', // Always job_seeker for registration
+            'role' => 'job_seeker',
+            'email_verified_at' => Carbon::now(),
         ]);
 
-        event(new Registered($user));
+        // event(new Registered($user));
 
-        // Auth::login($user);
+        Auth::login($user);
         
-        return redirect()->route('verification.notice')->with('status', 'Please verify your email address.');
+        // return redirect()->route('verification.notice')->with('status', 'Please verify your email address.');
+        return redirect()->route('job-seeker.dashboard');
 
     }
 }

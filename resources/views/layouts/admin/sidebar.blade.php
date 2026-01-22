@@ -4,8 +4,26 @@
         <!-- Logo -->
         <div class="flex items-center flex-shrink-0 px-6 mb-8">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3">
+                @php
+                    use App\Models\SiteSetting;
+                    $favicon = SiteSetting::getValue('favicon');
+                    $faviconUrl = $favicon ? asset('storage/' . $favicon) : null;
+                @endphp
+                
+                @if($faviconUrl)
+                    <div class="h-10 w-10 flex items-center justify-center rounded-lg bg-white/10">
+                        <img src="{{ $faviconUrl }}" 
+                            alt="Logo" 
+                            class="h-8 w-8 object-contain">
+                    </div>
+                @else
+                    <div class="h-10 w-10 flex items-center justify-center rounded-lg bg-indigo-600">
+                        <span class="text-white font-bold">A</span>
+                    </div>
+                @endif
+                
                 <div>
-                    <span class="text-xl mx-auto p-5 font-bold text-white">Admin Panel</span>
+                    <span class="text-xl font-bold text-white">Admin Panel</span>
                 </div>
             </a>
         </div>
@@ -28,8 +46,8 @@
                 <!-- Super Admin Section (Only visible to super admins) -->
                 @if(auth()->user()->isSuperAdmin())
                 <div class="pt-4 pb-2 px-2">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-xs font-semibold text-blue-300 uppercase tracking-wider">Super Admin</span>
+                    <div class="flex items-center">
+                        <span class="text-xs font-semibold text-blue-300 uppercase tracking-wider mr-2">Super Admin</span>
                         <div class="flex-grow h-px bg-gray-600"></div>                        
                         <div class="flex-grow h-px bg-gray-600"></div>
                     </div>

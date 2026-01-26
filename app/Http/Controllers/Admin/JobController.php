@@ -13,31 +13,125 @@ use Illuminate\Support\Str;
 class JobController extends Controller
 {
     public function index(Request $request)
-    {
-        $query = Job::with(['user'])
-            ->withCount('applications');
-        
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('company_name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
-            });
-        }
-        
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-        
-        $jobs = $query->orderByDesc('created_at')->paginate(20);
-        
-        $totalJobs = Job::count();
-        $pendingJobs = Job::where('status', 'pending')->count();
-        $activeJobs = Job::where('is_active', true)->count();
-        
-        return view('admin.jobs.index', compact('jobs', 'totalJobs', 'pendingJobs', 'activeJobs'));
+{
+    $query = Job::with(['user', 'category'])
+        ->withCount('applications');
+    
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('title', 'like', "%{$search}%")
+              ->orWhere('company_name', 'like', "%{$search}%")
+              ->orWhere('description', 'like', "%{$search}%");
+        });
     }
+    
+    if ($request->filled('status') && $request->status != 'all') {
+        $query->where('status', $request->status);
+    }
+    
+    if ($request->filled('job_type') && $request->job_type != 'all') {
+        $query->where('job_type', $request->job_type);
+    }
+    
+    if ($request->filled('experience_level') && $request->experience_level != 'all') {
+        $query->where('experience_level', $request->experience_level);
+    }
+    
+    if ($request->filled('date_status') && $request->date_status != 'all') {
+        if ($request->date_status == 'available') {
+            $query->where(function($q) {
+                $q->whereNull('application_deadline')
+                  ->orWhere('application_deadline', '>=', now()->startOfDay());
+            });
+        } elseif ($request->date_status == 'expired') {
+            $query->whereNotNull('application_deadline')
+                  ->where('application_deadline', '<', now()->startOfDay());
+        } elseif ($request->date_status == 'no_deadline') {
+            $query->whereNull('application_deadline');
+        }
+    }
+    
+    if ($request->has('is_active') && $request->is_active != 'all') {
+        $query->where('is_active', $request->is_active == '1');
+    }
+    
+    $jobs = $query->orderByDesc('created_at')->paginate(20);
+    
+    // Calculate stats
+    $totalJobs = Job::count();
+    $pendingJobs = Job::where('status', 'pending')->count();
+    $activeJobs = Job::where('is_active', true)->count();
+    
+    // Available jobs (active, approved, and not expired or no deadline)
+    $availableJobs = Job::where('is_active', true)
+        ->where('status', 'approved')
+        ->where(function($q) {
+            $q->whereNull('application_deadline')
+              ->orWhere('application_deadline', '>=', now()->startOfDay());
+        })->count();
+    
+    // Expired jobs (application deadline passed)
+    $expiredJobs = Job::where(function($q) {
+        $q->whereNotNull('application_deadline')
+          ->where('application_deadline', '<', now()->startOfDay());
+    })->count();
+    
+    // If AJAX request, return JSON response
+    if ($request->ajax()) {
+        $view = view('admin.jobs.partials.jobs_table', compact('jobs'))->render();
+        
+        return response()->json([
+            'html' => $view,
+            'jobs' => [
+                'from' => $jobs->firstItem(),
+                'to' => $jobs->lastItem(),
+                'total' => $jobs->total(),
+                'current_page' => $jobs->currentPage(),
+                'last_page' => $jobs->lastPage(),
+            ],
+            'stats' => [
+                'totalJobs' => $totalJobs,
+                'pendingJobs' => $pendingJobs,
+                'activeJobs' => $activeJobs,
+                'availableJobs' => $availableJobs,
+                'expiredJobs' => $expiredJobs,
+                'currentTotal' => $jobs->total(),
+            ]
+        ]);
+    }
+    
+    return view('admin.jobs.index', compact(
+        'jobs', 
+        'totalJobs', 
+        'pendingJobs', 
+        'activeJobs',
+        'availableJobs',
+        'expiredJobs'
+    ));
+}
+
+public function updateStatus(Request $request, Job $job)
+{
+    $request->validate([
+        'status' => 'required|in:pending,approved,rejected',
+    ]);
+    
+    $job->update([
+        'status' => $request->status,
+        'is_active' => $request->status == 'approved',
+    ]);
+    
+    if ($request->ajax()) {
+        return response()->json([
+            'success' => true,
+            'message' => 'Job status updated successfully.'
+        ]);
+    }
+    
+    return redirect()->route('admin.jobs.show', $job)
+        ->with('success', 'Job status updated successfully.');
+}
 
     public function show($identifier)
     {
@@ -52,20 +146,20 @@ class JobController extends Controller
         return view('admin.jobs.show', compact('job'));
     }
 
-    public function updateStatus(Request $request, Job $job)
-    {
-        $request->validate([
-            'status' => 'required|in:pending,approved,rejected',
-        ]);
+    // public function updateStatus(Request $request, Job $job)
+    // {
+    //     $request->validate([
+    //         'status' => 'required|in:pending,approved,rejected',
+    //     ]);
         
-        $job->update([
-            'status' => $request->status,
-            'is_active' => $request->status == 'approved',
-        ]);
+    //     $job->update([
+    //         'status' => $request->status,
+    //         'is_active' => $request->status == 'approved',
+    //     ]);
         
-        return redirect()->route('admin.jobs.show', $job)
-            ->with('success', 'Job status updated successfully.');
-    }
+    //     return redirect()->route('admin.jobs.show', $job)
+    //         ->with('success', 'Job status updated successfully.');
+    // }
 
     public function create()
     {

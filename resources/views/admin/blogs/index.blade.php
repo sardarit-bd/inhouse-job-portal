@@ -1,5 +1,8 @@
 @extends('layouts.admin')
 
+@section('page-title', 'Blogs Management')
+@section('page-subtitle', 'Manage all blogs')
+
 @section('content')
 <div class="">
     <div class="max-w-full mx-auto">

@@ -13,9 +13,8 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5 0c-.667.916-1.583 1.5-2.6 1.5h-1.3c-1.02 0-1.9-.592-2.6-1.5"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                             </svg>
                         </div>
                     </div>
@@ -96,11 +95,11 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h3 class="text-lg leading-6 font-medium text-gray-900">
-                        All Admins ({{ $admins->total() }})
+                        Admins ({{ $admins->total() }})
                     </h3>
-                    <p class="mt-1 text-sm text-gray-500">
+                    <!-- <p class="mt-1 text-sm text-gray-500">
                         Manage system administrators and their permissions
-                    </p>
+                    </p> -->
                 </div>
                 <div class="flex items-center space-x-3">
                     <!-- Search -->
@@ -123,8 +122,8 @@
                             class="w-48 border border-gray-300 rounded-md px-3 py-2 text-sm 
                                 focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="">All Types</option>
-                        <option value="super">Super Admins</option>
-                        <option value="normal">Normal Admins</option>
+                        <option value="super" {{ request('type') == 'super' ? 'selected' : '' }}>Super Admins</option>
+                        <option value="normal" {{ request('type') == 'normal' ? 'selected' : '' }}>Normal Admins</option>
                     </select>
 
                     <select x-model="selectedStatus"
@@ -132,8 +131,8 @@
                             class="w-48 border border-gray-300 rounded-md px-3 py-2 text-sm 
                                 focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
                     </select>
 
                     <!-- Add Admin Button -->
@@ -155,7 +154,7 @@
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <span class="text-gray-600">Loading admins...</span>
+                <span class="text-gray-600">Loading...</span>
             </div>
         </div>
 
@@ -234,38 +233,78 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            @if($admin->is_active)
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                <svg class="mr-1.5 h-2 w-2 text-green-400" fill="currentColor" viewBox="0 0 8 8">
-                                    <circle cx="4" cy="4" r="3"/>
-                                </svg>
-                                Active
-                            </span>
-                            @else
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                <svg class="mr-1.5 h-2 w-2 text-gray-400" fill="currentColor" viewBox="0 0 8 8">
-                                    <circle cx="4" cy="4" r="3"/>
-                                </svg>
-                                Inactive
-                            </span>
-                            @endif
+                            <div class="flex items-center space-x-2">
+                                @if($admin->is_active)
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <svg class="mr-1.5 h-2 w-2 text-green-400" fill="currentColor" viewBox="0 0 8 8">
+                                        <circle cx="4" cy="4" r="3"/>
+                                    </svg>
+                                    Active
+                                </span>
+                                @if($admin->id !== auth()->id())
+                                <button onclick="toggleAdminStatus({{ $admin->id }}, '{{ $admin->name }}')"
+                                        class="text-yellow-600 hover:text-yellow-900 transition-colors duration-200 p-1 rounded-full hover:bg-yellow-50"
+                                        title="Deactivate Admin">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                                    </svg>
+                                </button>
+                                @endif
+                                @else
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                    <svg class="mr-1.5 h-2 w-2 text-gray-400" fill="currentColor" viewBox="0 0 8 8">
+                                        <circle cx="4" cy="4" r="3"/>
+                                    </svg>
+                                    Inactive
+                                </span>
+                                @if($admin->id !== auth()->id())
+                                <button onclick="toggleAdminStatus({{ $admin->id }}, '{{ $admin->name }}')"
+                                        class="text-green-600 hover:text-green-900 transition-colors duration-200 p-1 rounded-full hover:bg-green-50"
+                                        title="Activate Admin">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                    </svg>
+                                </button>
+                                @endif
+                                @endif
+                            </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            @if($admin->email_verified_at)
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                <svg class="mr-1.5 h-4 w-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                </svg>
-                                Verified
-                            </span>
-                            @else
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                <svg class="mr-1.5 h-4 w-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                                </svg>
-                                Unverified
-                            </span>
-                            @endif
+                            <div class="flex items-center space-x-2">
+                                @if($admin->email_verified_at)
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <svg class="mr-1.5 h-4 w-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                    </svg>
+                                    Verified
+                                </span>
+                                @if($admin->id !== auth()->id())
+                                <button onclick="toggleEmailVerification({{ $admin->id }}, '{{ $admin->name }}', true)"
+                                        class="text-yellow-600 hover:text-yellow-900 transition-colors duration-200 p-1 rounded-full hover:bg-yellow-50"
+                                        title="Mark as Unverified">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                                    </svg>
+                                </button>
+                                @endif
+                                @else
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                    <svg class="mr-1.5 h-3 w-3 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                    </svg>
+                                    Unverified
+                                </span>
+                                @if($admin->id !== auth()->id())
+                                <button onclick="toggleEmailVerification({{ $admin->id }}, '{{ $admin->name }}', false)"
+                                        class="text-green-600 hover:text-green-900 transition-colors duration-200 p-1 rounded-full hover:bg-green-50"
+                                        title="Mark as Verified">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                    </svg>
+                                </button>
+                                @endif
+                                @endif
+                            </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{ $admin->created_at->format('M d, Y') }}
@@ -275,45 +314,18 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div class="flex items-center space-x-3">
-                                <!-- Edit Button -->
-                                <!-- <a href="{{ route('admin.admins.edit', $admin) }}" 
-                                   class="text-blue-600 hover:text-blue-900 transition-colors duration-200"
-                                   title="Edit Admin">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                    </svg>
-                                </a> -->
-                                
-                                <!-- Toggle Status Button -->
                                 @if($admin->id !== auth()->id())
-                                <button onclick="toggleAdminStatus({{ $admin->id }}, {{ $admin->is_active ? 'true' : 'false' }})"
-                                        class="{{ $admin->is_active ? 'text-yellow-600 hover:text-yellow-900' : 'text-green-600 hover:text-green-900' }} transition-colors duration-200"
-                                        title="{{ $admin->is_active ? 'Deactivate' : 'Activate' }}">
+                                <button onclick="deleteAdmin({{ $admin->id }}, '{{ $admin->name }}')"
+                                        class="text-red-600 hover:text-red-900 transition-colors duration-200 p-1 rounded-full hover:bg-red-50"
+                                        title="Delete Admin">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                     </svg>
                                 </button>
                                 @else
-                                <span class="text-md text-gray-700" title="You cannot deactivate yourself">
+                                <span class="text-md text-gray-700" title="You cannot delete yourself">
                                     N/A
                                 </span>
-                                @endif
-                                
-                                <!-- Delete Button (Not for current user) -->
-                                @if($admin->id !== auth()->id())
-                                <form action="{{ route('admin.admins.destroy', $admin) }}" method="POST" 
-                                      onsubmit="return confirmDelete()"
-                                      class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" 
-                                            class="text-red-600 hover:text-red-900 transition-colors duration-200"
-                                            title="Delete Admin">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                        </svg>
-                                    </button>
-                                </form>
                                 @endif
                             </div>
                         </td>
@@ -322,11 +334,11 @@
                     <tr>
                         <td colspan="6" class="px-6 py-12 text-center">
                             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13 0h-6m0 0V8a3 3 0 00-6 0v4m6 0a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                             <h3 class="mt-2 text-sm font-medium text-gray-900">No admins found</h3>
-                            <p class="mt-1 text-sm text-gray-500">Get started by creating a new admin.</p>
-                            <div class="mt-6">
+                            <!-- <p class="mt-1 text-sm text-gray-500">Get started by creating a new admin.</p> -->
+                            <!-- <div class="mt-6">
                                 <a href="{{ route('admin.admins.create') }}" 
                                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700">
                                     <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -334,7 +346,7 @@
                                     </svg>
                                     Add Admin
                                 </a>
-                            </div>
+                            </div> -->
                         </td>
                     </tr>
                     @endforelse
@@ -353,20 +365,26 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 function adminManagement() {
     return {
         loading: false,
-        admins: @json($admins->items()),
-        currentPage: {{ $admins->currentPage() }},
-        lastPage: {{ $admins->lastPage() }},
-        total: {{ $admins->total() }},
-        searchQuery: '',
-        selectedType: '',
-        selectedStatus: '',
+        searchQuery: '{{ request('search') }}',
+        selectedType: '{{ request('type') }}',
+        selectedStatus: '{{ request('status') }}',
         
         init() {
             console.log('Admin Management Initialized');
+            // Initialize Alpine.js data from URL parameters
+            this.updateFromUrl();
+        },
+        
+        updateFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            this.searchQuery = urlParams.get('search') || '';
+            this.selectedType = urlParams.get('type') || '';
+            this.selectedStatus = urlParams.get('status') || '';
         },
         
         async searchAdmins() {
@@ -391,52 +409,27 @@ function adminManagement() {
                 if (this.searchQuery) params.append('search', this.searchQuery);
                 if (this.selectedType) params.append('type', this.selectedType);
                 if (this.selectedStatus) params.append('status', this.selectedStatus);
-                if (this.currentPage > 1) params.append('page', this.currentPage);
                 
-                const response = await fetch(`/admin/admins?${params.toString()}`, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'application/json'
-                    }
-                });
+                // Keep existing page parameter if any
+                const currentPage = new URLSearchParams(window.location.search).get('page');
+                if (currentPage) params.append('page', currentPage);
                 
-                const data = await response.json();
-                
-                if (data.admins) {
-                    this.admins = data.admins.data;
-                    this.currentPage = data.admins.current_page;
-                    this.lastPage = data.admins.last_page;
-                    this.total = data.admins.total;
-                }
+                window.location.href = `/admin/admins?${params.toString()}`;
             } catch (error) {
                 console.error('Error fetching admins:', error);
-                this.showAlert('Error', 'Failed to load admins', 'error');
             } finally {
                 this.loading = false;
             }
-        },
-        
-        showAlert(title, text, icon) {
-            Swal.fire({
-                title: title,
-                text: text,
-                icon: icon,
-                timer: 3000,
-                showConfirmButton: false,
-                toast: true,
-                position: 'top-end',
-                timerProgressBar: true
-            });
         }
     }
 }
 
-function toggleAdminStatus(adminId, isActive) {
+function toggleAdminStatus(adminId, adminName) {
     const currentUserId = {{ auth()->id() }};
     if (adminId === currentUserId) {
         Swal.fire({
             title: 'Action Not Allowed',
-            text: 'You cannot deactivate your own account.',
+            text: 'You cannot change your own status.',
             icon: 'warning',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'OK'
@@ -445,14 +438,12 @@ function toggleAdminStatus(adminId, isActive) {
     }
     
     Swal.fire({
-        title: isActive ? 'Deactivate Admin?' : 'Activate Admin?',
-        text: isActive 
-            ? 'Admin will not be able to login until activated.'
-            : 'Admin will be able to login and access the system.',
-        icon: isActive ? 'warning' : 'info',
+        title: 'Change Admin Status?',
+        text: `Are you sure you want to change ${adminName}'s status?`,
+        icon: 'question',
         showCancelButton: true,
-        confirmButtonText: isActive ? 'Yes, deactivate!' : 'Yes, activate!',
-        confirmButtonColor: isActive ? '#d33' : '#3085d6',
+        confirmButtonText: 'Yes, change it!',
+        confirmButtonColor: '#3085d6',
         cancelButtonColor: '#6b7280',
         reverseButtons: true
     }).then((result) => {
@@ -479,17 +470,99 @@ function toggleAdminStatus(adminId, isActive) {
     });
 }
 
-function confirmDelete() {
-    return Swal.fire({
+function toggleEmailVerification(adminId, adminName, isVerified) {
+    const currentUserId = {{ auth()->id() }};
+    if (adminId === currentUserId) {
+        Swal.fire({
+            title: 'Action Not Allowed',
+            text: 'You cannot change your own verification status.',
+            icon: 'warning',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+    
+    const action = isVerified ? 'unverify' : 'verify';
+    const actionText = isVerified ? 'Unverify' : 'Verify';
+    
+    Swal.fire({
+        title: `${actionText} Email?`,
+        text: `Are you sure you want to ${action} ${adminName}'s email verification?`,
+        icon: isVerified ? 'warning' : 'info',
+        showCancelButton: true,
+        confirmButtonText: `Yes, ${actionText}!`,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#6b7280',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/admin/admins/${adminId}/toggle-email-verification`;
+            
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            
+            const methodField = document.createElement('input');
+            methodField.type = 'hidden';
+            methodField.name = '_method';
+            methodField.value = 'PATCH';
+            
+            form.appendChild(csrfToken);
+            form.appendChild(methodField);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+
+function deleteAdmin(adminId, adminName) {
+    const currentUserId = {{ auth()->id() }};
+    if (adminId === currentUserId) {
+        Swal.fire({
+            title: 'Action Not Allowed',
+            text: 'You cannot delete yourself.',
+            icon: 'warning',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+    
+    Swal.fire({
         title: 'Delete Admin?',
-        text: "This action cannot be undone!",
+        text: `Are you sure you want to delete ${adminName}? This action cannot be undone!`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
         confirmButtonColor: '#d33',
         cancelButtonColor: '#6b7280',
         reverseButtons: true
-    }).then((result) => result.isConfirmed);
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/admin/admins/${adminId}`;
+            
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            
+            const methodField = document.createElement('input');
+            methodField.type = 'hidden';
+            methodField.name = '_method';
+            methodField.value = 'DELETE';
+            
+            form.appendChild(csrfToken);
+            form.appendChild(methodField);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
 }
 </script>
 @endpush
@@ -498,6 +571,26 @@ function confirmDelete() {
 <style>
 [x-cloak] {
     display: none !important;
+}
+
+/* Better alignment for status and verification columns */
+.flex.items-center.space-x-2 {
+    align-items: center;
+}
+
+/* Better button styling for hover effect */
+button.p-1.rounded-full {
+    padding: 0.25rem;
+    border-radius: 9999px;
+}
+
+button.p-1.rounded-full:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Ensure select dropdowns show current filter */
+select option[selected] {
+    font-weight: bold;
 }
 </style>
 @endpush

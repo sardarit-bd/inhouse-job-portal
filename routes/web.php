@@ -149,7 +149,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/blogs/{blog}/toggle-status', [AdminBlogController::class, 'toggleStatus'])->name('blogs.toggle-status');
         Route::patch('/blogs/{blog}/toggle-featured', [AdminBlogController::class, 'toggleFeatured'])->name('blogs.toggle-featured');
 
-       // Settings
+        // Settings
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
         Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
         Route::delete('/settings/logo', [SettingController::class, 'deleteLogo'])->name('settings.deleteLogo');
@@ -204,9 +204,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Super Admin Routes
     Route::middleware(['auth', 'super_admin'])->prefix('admin')->name('admin.')->group(function () {
         // Admin Management
-        Route::resource('admins', AdminController::class)->except(['show']);
-        Route::patch('admins/{admin}/toggle-status', [AdminController::class, 'toggleStatus']);
-        
+         Route::prefix('admins')->name('admins.')->group(function () {
+            Route::get('/', [AdminController::class, 'index'])->name('index');
+            Route::get('/create', [AdminController::class, 'create'])->name('create');
+            Route::post('/', [AdminController::class, 'store'])->name('store');
+            Route::delete('/{admin}', [AdminController::class, 'destroy'])->name('destroy');
+            Route::patch('/{admin}/toggle-status', [AdminController::class, 'toggleStatus'])->name('toggle-status');
+            Route::patch('/{admin}/toggle-email-verification', [AdminController::class, 'toggleEmailVerification'])->name('toggle-email-verification');
+        });
         // System Logs 
         Route::get('logs', function () {
             return view('admin.logs.index');

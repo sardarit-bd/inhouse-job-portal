@@ -38,7 +38,7 @@
         </div>
     @endif -->
 
-    @if(session('error'))
+    <!-- @if(session('error'))
         <div class="m-6 bg-red-50 border-l-4 border-red-400 p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
@@ -51,7 +51,7 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endif -->
 
     @if($categories->isEmpty())
         <div class="px-6 py-12 text-center">
@@ -84,13 +84,13 @@
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Jobs
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Order
-                        </th>
+                        </th> -->
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Status
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center">
                             Actions
                         </th>
                     </tr>
@@ -125,15 +125,15 @@
                                     {{ $category->description ?? 'No description' }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                     {{ $category->jobs_count ?? 0 }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                            <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                 {{ $category->order }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                            </td> -->
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 <form action="{{ route('admin.categories.update-status', $category) }}" 
                                       method="POST" 
                                       class="inline"
@@ -251,27 +251,6 @@ function deleteCategory(event, formElement) {
     });
 }
 
-// Show SweetAlert for success message
-@if(session('success'))
-Swal.fire({
-    title: 'Success!',
-    text: '{{ session("success") }}',
-    icon: 'success',
-    confirmButtonColor: '#3085d6',
-    confirmButtonText: 'OK'
-});
-@endif
-
-// Show SweetAlert for error message
-@if(session('error'))
-Swal.fire({
-    title: 'Error!',
-    text: '{{ session("error") }}',
-    icon: 'error',
-    confirmButtonColor: '#d33',
-    confirmButtonText: 'OK'
-});
-@endif
 </script>
 @endpush
 @endsection

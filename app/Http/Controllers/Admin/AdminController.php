@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-
     public function index()
     {
         $query = User::where('role', 'admin')
@@ -92,49 +91,15 @@ class AdminController extends Controller
             ->with('success', 'Admin created successfully.');
     }
 
-    // public function edit(User $admin)
-    // {
-    //     if ($admin->role !== 'admin') {
-    //         abort(403, 'Only admin users can be edited.');
-    //     }
-
-    //     return view('admin.admins.edit', compact('admin'));
-    // }
-
-    // public function update(Request $request, User $admin)
-    // {
-    //     if ($admin->role !== 'admin') {
-    //         abort(403, 'Only admin users can be updated.');
-    //     }
-
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'email' => 'required|string|email|max:255|unique:users,email,' . $admin->id,
-    //         'password' => 'nullable|string|min:8|confirmed',
-    //         'is_super_admin' => 'nullable|boolean',
-    //         'is_active' => 'nullable|boolean',
-    //     ]);
-
-    //     $data = [
-    //         'name' => $request->name,
-    //         'email' => $request->email,
-    //         'is_super_admin' => $request->has('is_super_admin') ? 1 : 0,
-    //         'is_active' => $request->has('is_active') ? 1 : 0,
-    //     ];
-
-    //     if ($request->filled('password')) {
-    //         $data['password'] = Hash::make($request->password);
-    //     }
-
-    //     $admin->update($data);
-
-    //     return redirect()->route('admin.admins.index')
-    //         ->with('success', 'Admin updated successfully.');
-    // }
-
     public function destroy(User $admin)
     {
         if ($admin->id === auth()->id()) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You cannot delete yourself.'
+                ], 403);
+            }
             return redirect()->route('admin.admins.index')
                 ->with('error', 'You cannot delete yourself.');
         }
@@ -144,6 +109,13 @@ class AdminController extends Controller
         }
 
         $admin->delete();
+
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Admin deleted successfully.'
+            ]);
+        }
 
         return redirect()->route('admin.admins.index')
             ->with('success', 'Admin deleted successfully.');
@@ -181,5 +153,46 @@ class AdminController extends Controller
         
         return redirect()->route('admin.admins.index')
             ->with('success', 'Admin status updated successfully.');
+    }
+
+    public function toggleEmailVerification(User $admin)
+    {
+        if ($admin->role !== 'admin') {
+            abort(403, 'Only admin users can be managed.');
+        }
+        
+        if ($admin->id === auth()->id()) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You cannot change your own verification status.'
+                ], 403);
+            }
+            return redirect()->back()
+                ->with('error', 'You cannot change your own verification status.');
+        }
+        
+        // Toggle verification status
+        if ($admin->email_verified_at) {
+            $admin->email_verified_at = null;
+        } else {
+            $admin->email_verified_at = now();
+        }
+        
+        $admin->save();
+        
+        $action = $admin->email_verified_at ? 'verified' : 'unverified';
+        
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => "Email {$action} successfully.",
+                'is_verified' => (bool) $admin->email_verified_at,
+                'verified_at' => $admin->email_verified_at ? $admin->email_verified_at->format('M d, Y') : null
+            ]);
+        }
+        
+        return redirect()->route('admin.admins.index')
+            ->with('success', "Email {$action} successfully.");
     }
 }

@@ -16,30 +16,7 @@
             <div class="absolute inset-0 bg-gradient-to-br from-blue-100/70 to-blue-200/50 backdrop-blur-sm"></div>
         </div>
 
-        <!-- Content -->
-        <div class="relative z-10 px-16">
-            <h2 class="text-4xl text-blue-800 font-semibold leading-tight mb-6">
-                Start Your Career Journey<br>
-                With the Right Opportunity
-            </h2>
-
-            <p class="text-lg text-blue-500 max-w-md mb-10">
-                Join thousands of job seekers who found their dream jobs.
-                Build your profile, apply confidently, and get hired faster.
-            </p>
-
-            <!-- Quote -->
-            <div class="flex items-center gap-4">
-                <img src="https://i.pravatar.cc/80?img=45"
-                     class="w-12 h-12 rounded-full border border-white/30">
-                <div>
-                    <p class="font-medium">Nusrat Jahan</p>
-                    <p class="text-sm text-blue-200">
-                        Software Engineer
-                    </p>
-                </div>
-            </div>
-        </div>
+        
     </div>
 
     <!-- RIGHT : REGISTER FORM -->

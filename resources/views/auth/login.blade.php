@@ -113,52 +113,7 @@
             <div class="absolute inset-0 bg-gradient-to-br from-blue-100/70 to-blue-200/50 backdrop-blur-sm"></div>
         </div>
 
-        <!-- Content -->
-        <div class="relative z-10">
-            <h2 class="text-4xl font-semibold leading-tight mb-6">
-                Find Your Dream Job,<br>
-                Build Your Career with Confidence
-            </h2>
-
-            <p class="text-lg text-indigo-100 max-w-md">
-                Discover thousands of verified job opportunities from trusted companies.
-                Apply smarter and get hired faster.
-            </p>
-
-            <!-- Testimonial -->
-            <div class="mt-10">
-                <p class="italic text-indigo-100 mb-6 max-w-lg">
-                    “This platform helped us connect with top talent quickly.
-                    Hiring has never been this smooth.”
-                </p>
-
-                <div class="flex items-center gap-4">
-                    <img src="https://i.pravatar.cc/80?img=32"
-                        class="w-12 h-12 rounded-full border border-white/30">
-                    <div>
-                        <p class="font-medium">Arif Hasan</p>
-                        <p class="text-sm text-indigo-200">
-                            HR Lead at NexaTech
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bottom Logos -->
-        <div class="relative z-10 opacity-90">
-            <p class="text-sm mb-4 uppercase tracking-wide">
-                Trusted by 1000+ Companies
-            </p>
-
-            <div class="flex flex-wrap gap-6 text-indigo-200 text-sm font-medium">
-                <span>Google</span>
-                <span>Microsoft</span>
-                <span>Amazon</span>
-                <span>Netflix</span>
-                <span>Shopify</span>
-            </div>
-        </div>
+        
     </div>
 </div>
 
